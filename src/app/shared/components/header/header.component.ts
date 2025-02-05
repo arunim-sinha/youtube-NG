@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  
   isLoggedIn: boolean = false; // Set to false initially to simulate logged-out state
 
   // Function to handle login action (simulating successful login)

@@ -9,13 +9,13 @@
     <div class="right-links">
       <!-- Show login link when not logged in -->
       <div *ngIf="!isLoggedIn" class="login">
-        <a href="#" (click)="login()">Login</a>
+        <a (click)="login()">Login</a>
       </div>
   
       <!-- Show profile link when logged in -->
       <div *ngIf="isLoggedIn" class="profile">
         <a href="#">Profile</a>
-        <a href="#" (click)="logout()">Logout</a> <!-- Optional logout functionality -->
+        <a (click)="logout()">Logout</a> <!-- Optional logout functionality -->
       </div>
     </div>
   </header>
