@@ -1,22 +1,64 @@
-<header>
-    <div class="left-links">
-      <a href="#">Home</a>
-      <a href="#">About</a>
-      <a href="#">Services</a>
-      <a href="#">Contact</a>
-    </div>
-  
-    <div class="right-links">
+<p-menubar id="header" >
+  <ng-template #start>
+    <a class="p-menubar-item-link" href="#" target="_blank">
+      <span>Home</span>
+    </a>
+    <a class="p-menubar-item-link" href="#" target="_blank">
+      <span>About</span>
+    </a>
+    <a class="p-menubar-item-link" href="#" target="_blank">
+      <span>Services</span>
+    </a>
+    <a class="p-menubar-item-link" href="#" target="_blank">
+      <span>Contact</span>
+    </a>
+  </ng-template>
+  <ng-template #end>
       <!-- Show login link when not logged in -->
-      <div *ngIf="!isLoggedIn" class="login">
-        <a (click)="login()">Login</a>
+      <div class="grid"  *ngIf="!isLoggedIn">
+        <a class="col p-menubar-item-link" (click)="register()">
+          <span>Register</span>
+        </a>
+        <p-button label="Login" class="col p-menubar-item-button" (click)="login()"></p-button>
       </div>
-  
       <!-- Show profile link when logged in -->
-      <div *ngIf="isLoggedIn" class="profile">
-        <a href="#">Profile</a>
-        <a (click)="logout()">Logout</a> <!-- Optional logout functionality -->
+      <div  class="grid" *ngIf="isLoggedIn">
+        <a class="col p-menubar-item-link" href="#">
+          <span>Profile</span>
+        </a>
+        <p-button label="Logout" class="col p-menubar-item-button gap-4" (click)="logout()"></p-button><!-- Optional logout functionality -->
+      </div>
+  </ng-template>
+</p-menubar>
+<p-dialog id="registerDialog" [(visible)]="displayRegisterDialog" [modal]="true">
+  <ng-template #header>
+    <span class="font-bold text-xl">Register</span>
+  </ng-template>
+  <ng-template #content>
+    <span>Fill in the details.</span>
+    <div class="fieldgrid">
+      <div class="field col mb-0">
+        <div class="font-bold">Username</div>
+        <div class="flex-auto">
+          <input pInputText id="username" class="p-inputtext-sm" autocomplete="off" [textContent]="username" />
+        </div>
+      </div>
+      <div class="field col mb-0">
+        <div class="font-bold">Email</div>
+        <div class="flex-auto">
+          <input pInputText id="email" class="p-inputtext-sm" autocomplete="off" [textContent]="email" />
+        </div>
+      </div>
+      <div class="field col mb-0">
+        <div class="font-bold">Password</div>
+        <div class="flex-auto">
+          <input type="password" pInputText id="password" class="p-inputtext-sm" autocomplete="off" [textContent]="password" />
+        </div>
       </div>
     </div>
-  </header>
-  
+  </ng-template>
+  <ng-template #footer>
+    <p-button label="Cancel" [text]="true" severity="secondary" (click)="displayRegisterDialog = false" />
+    <p-button label="Save" [outlined]="true" severity="secondary" (click)="registerUser()" />
+  </ng-template>
+</p-dialog>
