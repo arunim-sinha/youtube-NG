@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   constructor() {}
-  private apiUrl = 'http://localhost:3001/api/auth';
+  private apiUrl = environment.apiUrl;
   async login(data: { email: string; password: string }): Promise<any> {
     if (!data || !data.email || !data.password) {
       return Promise.reject(new Error('Login data is missing or incomplete'));
