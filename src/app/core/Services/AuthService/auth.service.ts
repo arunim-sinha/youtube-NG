@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { environment } from 'environments/environment';
+import { environment } from 'environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
@@ -7,7 +7,8 @@ import { environment } from 'environments/environment';
 export class AuthService {
   constructor() {}
   private apiUrl = environment.apiUrl;
-  async login(data: { email: string; password: string }): Promise<any> {
+  
+  async login(data: { username: string; email: string; password: string }): Promise<any> {
     if (!data || !data.email || !data.password) {
       return Promise.reject(new Error('Login data is missing or incomplete'));
     }
@@ -25,11 +26,12 @@ export class AuthService {
   }
 
   async register(data: {
-    username: string;
-    email: string;
-    password: string;
-  }): Promise<any> {
-    if (!data || !data.username || !data.email || !data.password) {
+  userName: string;
+  email: string;
+  password: string;
+}): Promise<any> {
+    if (!data || !data.userName || !data.email || !data.password) {
+      console.log(data);
       return Promise.reject(
         new Error('Registration data is missing or incomplete')
       );
@@ -43,6 +45,7 @@ export class AuthService {
         body: JSON.stringify(data),
       });
       if (!res.ok) {
+        console.log(res);
         return Promise.reject(new Error('Registration failed'));
       }
       return await res.json();
@@ -50,6 +53,7 @@ export class AuthService {
       return Promise.reject(new Error('Network error'));
     }
   }
+
   async logout(): Promise<any> {
     try {
       const res = await fetch(`${this.apiUrl}/logout`, {

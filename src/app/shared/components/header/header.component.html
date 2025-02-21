@@ -40,22 +40,23 @@
       <div class="field col mb-0">
         <div class="font-bold">Username</div>
         <div class="flex-auto">
-          <input pInputText id="username" class="p-inputtext-sm" autocomplete="off" [textContent]="username" />
+          <input pInputText id="username" class="p-inputtext-sm" autocomplete="off" [(ngModel)]="username" />
         </div>
       </div>
       <div class="field col mb-0">
         <div class="font-bold">Email</div>
         <div class="flex-auto">
-          <input pInputText id="email" class="p-inputtext-sm" autocomplete="off" [textContent]="email" />
+          <input pInputText id="email" class="p-inputtext-sm" autocomplete="off" [(ngModel)]="email"  type="email" />
         </div>
       </div>
       <div class="field col mb-0">
         <div class="font-bold">Password</div>
         <div class="flex-auto">
-          <input type="password" pInputText id="password" class="p-inputtext-sm" autocomplete="off" [textContent]="password" />
+          <input type="password" pInputText id="password" class="p-inputtext-sm" autocomplete="off" [(ngModel)]="password" type="password" />
         </div>
       </div>
     </div>
+    <p-message severity="error" *ngIf="errormsg"  [text]="ErrorMessage"  icon="pi pi-times-circle" styleClass="mb-2" />
   </ng-template>
   <ng-template #footer>
     <p-button label="Cancel" [text]="true" severity="secondary" (click)="displayRegisterDialog = false" />

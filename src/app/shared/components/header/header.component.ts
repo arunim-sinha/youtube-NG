@@ -4,8 +4,9 @@ import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
 import { AuthService } from '@app/core/Services/AuthService/auth.service';
-import e from 'express';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-header',
   imports: [
@@ -14,6 +15,8 @@ import e from 'express';
     MenubarModule,
     DialogModule,
     InputTextModule,
+    FormsModule,
+    MessageModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
@@ -21,9 +24,11 @@ import e from 'express';
 export class HeaderComponent {
   authService: AuthService; //injected service
   isLoggedIn: boolean = false; // Set to false initially to simulate logged-out state
-  username: string="";
-  email: string="";
-  password: string="";
+  username: string = '';
+  email: string = '';
+  password: string = '';
+  ErrorMessage: string='';
+  errormsg: boolean = false;
   constructor(authService: AuthService) {
     this.authService = authService;
   }
@@ -36,30 +41,32 @@ export class HeaderComponent {
       this.password !== null &&
       this.password !== undefined
     ) {
+      console.log(this.username, this.email, this.password);
       this.authService
         .register({
-          username: this.username,
+          userName: this.username,
           email: this.email,
           password: this.password,
         })
-        .then((response: Response) => {
-          response.json().then((data: any) => {
-            if (data !== null && data !== undefined) {
-              if (data.success) {
-                console.log('Registration successful');
-                this.displayRegisterDialog = false;
-              } else {
-                console.log('Registration failed');
-              }
-            } else {
-              console.log('Registration failed due to unknown error');
-            }
-          });
+        .then((response: any) => {
+          if (response && response.successCode === 200 && response.success) {
+            console.log(response.message);
+            console.log('User details:', response.data);
+            this.displayRegisterDialog = false;
+          } else {
+            this.errormsg = true;
+            this.ErrorMessage='Registration failed';
+            console.log('Registration failed');
+          }
         })
         .catch((error: any) => {
+          this.errormsg = true;
+          this.ErrorMessage='Registration failed due to unknown error';
           console.log('Registration failed due to unknown error');
         });
     } else {
+      this.errormsg = true;
+      this.ErrorMessage='Registration failed due to null or undefined inputs';
       console.log('Registration failed due to null or undefined inputs');
     }
   }
