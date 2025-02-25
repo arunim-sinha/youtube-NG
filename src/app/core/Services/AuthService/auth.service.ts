@@ -8,8 +8,8 @@ export class AuthService {
   constructor() {}
   private apiUrl = environment.apiUrl;
   
-  async login(data: { username: string; email: string; password: string }): Promise<any> {
-    if (!data || !data.email || !data.password) {
+  async login(data: { username: string; password: string }): Promise<any> {
+    if (!data || !data.username || !data.password) {
       return Promise.reject(new Error('Login data is missing or incomplete'));
     }
     const res = await fetch(`${this.apiUrl}/login`, {
