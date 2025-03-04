@@ -1,25 +1,22 @@
 <footer>
-    <div class="footer-content">
-      <div class="left-footer">
-        <p>&copy; 2025 Your Company Name. All rights reserved.</p>
-      </div>
-      <div class="right-footer">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Contact Us</a>
-        <a href="#">Help</a>
-      </div>
-    </div>
-    <div class="social-media">
-      <a href="#" target="_blank">Facebook</a>
-      <a href="#" target="_blank">Twitter</a>
-      <a href="#" target="_blank">LinkedIn</a>
-    </div>
-  </footer>
-  <p-menubar>
-    <ng-template pTemplate="start">
+  <p-menubar styleClass="footer">
+    <ng-template #start>
+      <p>&copy; 2025 Your Company Name. All rights reserved.</p>
       </ng-template> 
-      <ng-template pTemplate="end">
+      <div class="social-media">
+        <a href="#" target="_blank">Facebook</a>
+        <a href="#" target="_blank">Twitter</a>
+        <a href="#" target="_blank">LinkedIn</a>
+      </div>
+      <ng-template #end>
+        <div class="footer-right" >
+        <a class="p-menubar-item-link"  href="#"><span>Privacy Policy</span></a>
+        <a class="p-menubar-item-link"  href="#"><span>Terms of Service</span></a>
+        <a class="p-menubar-item-link"  href="#"><span>Contact Us</span></a>
+        <a class="p-menubar-item-link"  href="#"><span>Help</span></a>
+        </div>
       </ng-template> 
   </p-menubar>
+  </footer>
+  
   
