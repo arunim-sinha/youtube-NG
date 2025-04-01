@@ -5,20 +5,41 @@ import { environment } from 'environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
+  async isLoggedIn() {
+    const token = localStorage.getItem('token');
+    const res = await fetch(`${this.apiUrl}/userProfile`, {
+      method: 'Get',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(res);
+    if (!res.ok) {
+      console.log('invalid token');
+      return false;
+    } else {
+      console.log('valid token');
+      return true;
+    }
+  }
   constructor() {}
   private apiUrl = environment.apiUrl;
-  
-  async login(data: { username: string; password: string }): Promise<any> {
-    if (!data || !data.username || !data.password) {
+
+  async login(data: { userName: string; password: string }): Promise<any> {
+    console.log(data);
+    if (!data || !data.userName || !data.password) {
       return Promise.reject(new Error('Login data is missing or incomplete'));
     }
     const res = await fetch(`${this.apiUrl}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        mode: 'cors',
       },
       body: JSON.stringify(data),
     });
+    console.log(res);
     if (!res.ok) {
       return Promise.reject(new Error('Login failed'));
     }
@@ -26,10 +47,10 @@ export class AuthService {
   }
 
   async register(data: {
-  userName: string;
-  email: string;
-  password: string;
-}): Promise<any> {
+    userName: string;
+    email: string;
+    password: string;
+  }): Promise<any> {
     if (!data || !data.userName || !data.email || !data.password) {
       console.log(data);
       return Promise.reject(

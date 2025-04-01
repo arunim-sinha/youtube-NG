@@ -48,7 +48,7 @@ export class HeaderComponent {
       this.password !== null &&
       this.password !== undefined
     ) {
-      console.log(this.username, this.email, this.password);
+      //console.log(this.username, this.email, this.password);
       this.authService
         .register({
           userName: this.username,
@@ -57,24 +57,24 @@ export class HeaderComponent {
         })
         .then((response: any) => {
           if (response && response.successCode === 200 && response.success) {
-            console.log(response.message);
-            console.log('User details:', response.data);
+            //console.log(response.message);
+            //console.log('User details:', response.data);
             this.displayRegisterDialog = false;
           } else {
             this.errormsg = true;
             this.ErrorMessage = 'Registration failed';
-            console.log('Registration failed');
+            //console.log('Registration failed');
           }
         })
         .catch((error: any) => {
           this.errormsg = true;
           this.ErrorMessage = 'Registration failed due to unknown error';
-          console.log('Registration failed due to unknown error');
+          //console.log('Registration failed due to unknown error');
         });
     } else {
       this.errormsg = true;
       this.ErrorMessage = 'Registration failed due to null or undefined inputs';
-      console.log('Registration failed due to null or undefined inputs');
+      //console.log('Registration failed due to null or undefined inputs');
     }
   }
   displayRegisterDialog: boolean = false;
@@ -92,34 +92,46 @@ export class HeaderComponent {
       this.password !== null &&
       this.password !== undefined
     ) {
-      console.log( this.username, this.password); // Log the email and password
+      //console.log(this.username, this.password); // Log the email and password
       this.authService
-        .login({ username: this.username, password: this.password })  // Pass the email and password to the login method
+        .login({ userName: this.username, password: this.password })  // Pass the email and password to the login method
         .then((response: any) => {
           if (response && response.successCode === 200 && response.success) {
-            console.log(response.message);
-            console.log('User details:', response.data);
+            //console.log(response.message);
+            //console.log('User details:', response.data);
             this.displayLoginDialog = false;
+            this.isLoggedIn = true;
+            const accessToken = response.data.accessToken;
+            localStorage.setItem('token', accessToken);
+            document.cookie = `jwt=${accessToken}; path=/`;
           } else {
             this.errormsg = true;
             this.ErrorMessage = 'Login failed';
-            console.log('Login failed');
+            //console.log('Login failed');
+            this.displayLoginDialog = false;
+            this.isLoggedIn = false;
           }
         })
         .catch((error: any) => {
           this.errormsg = true;
           this.ErrorMessage = 'Login failed due to unknown error';
-          console.log('Login failed due to unknown error');
+          //console.log('Login failed due to unknown error');
+          this.displayLoginDialog = false;
+          this.isLoggedIn = false;
         });
     } else {
       this.errormsg = true;
       this.ErrorMessage = 'Login failed due to null or undefined inputs';
-      console.log('Login failed due to null or undefined inputs');
+      //console.log('Login failed due to null or undefined inputs');
+      this.displayLoginDialog = false;
+      this.isLoggedIn = false;
     }
-    this.isLoggedIn = true;
   }
   // Function to handle logout (optional)
   logout() {
+    //remove access token to simulate logout from local storage and cookie
+    localStorage.removeItem('accessToken');
+    document.cookie = 'accessToken=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
     this.isLoggedIn = false;
   }
 }
