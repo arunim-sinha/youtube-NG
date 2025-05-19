@@ -10,7 +10,8 @@ export const routes: Routes = [
   },
   {
     path: 'profile',
-    component: ProfileComponent, canActivate: [authInterceptor],
+    component: ProfileComponent,
+    canActivate: [authInterceptor],
   },
   { path: '**', redirectTo: 'home' },
 ];
