@@ -20,7 +20,7 @@
     </div>
   </ng-template>
   <ng-template #footer>
-    <p-button label="Cancel" [text]="true" severity="secondary" (click)="displayLoginDialog = false" />
+    <p-button label="Cancel" [text]="true" severity="secondary" (click)="Cancel()" />
     <p-button label="Login" [outlined]="true" severity="secondary" (click)="loginUser()" />
   </ng-template>
 </p-dialog>

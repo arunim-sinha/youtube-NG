@@ -10,6 +10,15 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
+Cancel() {
+  this.displayLoginDialog = false;
+  this.displayLoginDialogChange.emit(this.displayLoginDialog);
+  this.ErrorMessage = '';
+  this.username = '';
+  this.email = '';
+  this.password = '';
+
+}
   authService: AuthService; //injected service
   @Input() displayLoginDialog: boolean = false;
   @Output() displayLoginDialogChange: EventEmitter<boolean>  = new EventEmitter<boolean>(); 

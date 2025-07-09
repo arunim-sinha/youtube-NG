@@ -30,5 +30,5 @@
       </div>
   </ng-template>
 </p-menubar>
-<app-login [(displayLoginDialog)]="displayLoginDialog"></app-login>
-<app-registration [(displayRegisterDialog)]="displayRegisterDialog"></app-registration>
+<app-login [(displayLoginDialog)]="displayLoginDialog" (displayLoginDialogChange)="resetLoginRegisterVisible($event)" ></app-login>
+<app-registration [(displayRegisterDialog)]="displayRegisterDialog" (displayRegisterDialogChange)="resetLoginRegisterVisible($event)"></app-registration>

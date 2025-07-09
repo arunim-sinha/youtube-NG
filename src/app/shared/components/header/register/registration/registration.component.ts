@@ -18,6 +18,15 @@ import { AuthService } from '@app/core/Services/AuthService/auth.service';
   styleUrl: './registration.component.css',
 })
 export class RegistrationComponent {
+Cancel() {
+  this.displayRegisterDialog = false;
+  this.displayRegisterDialogChange.emit(this.displayRegisterDialog);
+  this.ErrorMessage = '';
+  this.username = '';
+  this.email = '';
+  this.password = '';
+  this.errormsg = false;
+}
   
 
   @Input() displayRegisterDialog: boolean = false;

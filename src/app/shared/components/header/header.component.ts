@@ -29,6 +29,7 @@ export class HeaderComponent {
   authService: AuthService; //injected service
   isLoggedIn: boolean = false; // Set to false initially to simulate logged-out state
   displayLoginDialog: boolean = false;
+  displayRegisterDialog: boolean = false;
   username: string = '';
   email: string = '';
   password: string = '';
@@ -44,9 +45,17 @@ export class HeaderComponent {
     this.email = '';
     this.password = '';
   }
- 
-  displayRegisterDialog: boolean = false;
-  
+  resetLoginRegisterVisible($event: boolean)
+  {
+    console.log('resetLoginRegisterVisible called with:', $event);
+    this.displayLoginDialog = false;
+    this.displayRegisterDialog = false;
+    this.username = '';
+    this.email = '';
+    this.password = '';
+    this.ErrorMessage = '';
+    this.errormsg = false;
+  }
   // Function to handle login action (simulating successful login)
   login() {
     this.displayLoginDialog = true;
