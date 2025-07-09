@@ -7,6 +7,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { AuthService } from '@app/core/Services/AuthService/auth.service';
 import { FormsModule } from '@angular/forms';
+import { LoginComponent } from './login/login.component';
+import { RegistrationComponent } from "./register/registration/registration.component";
 @Component({
   selector: 'app-header',
   imports: [
@@ -17,19 +19,22 @@ import { FormsModule } from '@angular/forms';
     InputTextModule,
     FormsModule,
     MessageModule,
-  ],
+    LoginComponent,
+    RegistrationComponent
+],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
 export class HeaderComponent {
   authService: AuthService; //injected service
   isLoggedIn: boolean = false; // Set to false initially to simulate logged-out state
+  displayLoginDialog: boolean = false;
   username: string = '';
   email: string = '';
   password: string = '';
   ErrorMessage: string = '';
   errormsg: boolean = false;
-  displayLoginDialog: boolean = false;
+
   constructor(authService: AuthService) {
     this.authService = authService;
   }
@@ -39,44 +44,7 @@ export class HeaderComponent {
     this.email = '';
     this.password = '';
   }
-  registerUser() {
-    if (
-      this.username !== null &&
-      this.username !== undefined &&
-      this.email !== null &&
-      this.email !== undefined &&
-      this.password !== null &&
-      this.password !== undefined
-    ) {
-      //console.log(this.username, this.email, this.password);
-      this.authService
-        .register({
-          userName: this.username,
-          email: this.email,
-          password: this.password,
-        })
-        .then((response: any) => {
-          if (response && response.successCode === 200 && response.success) {
-            //console.log(response.message);
-            //console.log('User details:', response.data);
-            this.displayRegisterDialog = false;
-          } else {
-            this.errormsg = true;
-            this.ErrorMessage = 'Registration failed';
-            //console.log('Registration failed');
-          }
-        })
-        .catch((error: any) => {
-          this.errormsg = true;
-          this.ErrorMessage = 'Registration failed due to unknown error';
-          //console.log('Registration failed due to unknown error');
-        });
-    } else {
-      this.errormsg = true;
-      this.ErrorMessage = 'Registration failed due to null or undefined inputs';
-      //console.log('Registration failed due to null or undefined inputs');
-    }
-  }
+ 
   displayRegisterDialog: boolean = false;
   
   // Function to handle login action (simulating successful login)
@@ -85,48 +53,7 @@ export class HeaderComponent {
     this.username = '';
     this.password = '';
   }
-  loginUser() {
-    if (
-      this.username !== null &&
-      this.username !== undefined &&
-      this.password !== null &&
-      this.password !== undefined
-    ) {
-      //console.log(this.username, this.password); // Log the email and password
-      this.authService
-        .login({ userName: this.username, password: this.password })  // Pass the email and password to the login method
-        .then((response: any) => {
-          if (response && response.successCode === 200 && response.success) {
-            //console.log(response.message);
-            //console.log('User details:', response.data);
-            this.displayLoginDialog = false;
-            this.isLoggedIn = true;
-            const accessToken = response.data.accessToken;
-            localStorage.setItem('token', accessToken);
-            document.cookie = `jwt=${accessToken}; path=/`;
-          } else {
-            this.errormsg = true;
-            this.ErrorMessage = 'Login failed';
-            //console.log('Login failed');
-            this.displayLoginDialog = false;
-            this.isLoggedIn = false;
-          }
-        })
-        .catch((error: any) => {
-          this.errormsg = true;
-          this.ErrorMessage = 'Login failed due to unknown error';
-          //console.log('Login failed due to unknown error');
-          this.displayLoginDialog = false;
-          this.isLoggedIn = false;
-        });
-    } else {
-      this.errormsg = true;
-      this.ErrorMessage = 'Login failed due to null or undefined inputs';
-      //console.log('Login failed due to null or undefined inputs');
-      this.displayLoginDialog = false;
-      this.isLoggedIn = false;
-    }
-  }
+  
   // Function to handle logout (optional)
   logout() {
     //remove access token to simulate logout from local storage and cookie
