@@ -1,4 +1,4 @@
-import { Component,EventEmitter,Input,Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { MessageModule } from 'primeng/message';
@@ -18,30 +18,30 @@ import { AuthService } from '@app/core/Services/AuthService/auth.service';
   styleUrl: './registration.component.css',
 })
 export class RegistrationComponent {
-Cancel() {
-  this.displayRegisterDialog = false;
-  this.displayRegisterDialogChange.emit(this.displayRegisterDialog);
-  this.ErrorMessage = '';
-  this.username = '';
-  this.email = '';
-  this.password = '';
-  this.errormsg = false;
-}
-  
+  Cancel() {
+    this.displayRegisterDialog = false;
+    this.displayRegisterDialogChange.emit(this.displayRegisterDialog);
+    this.ErrorMessage = '';
+    this.username = '';
+    this.email = '';
+    this.password = '';
+    this.errormsg = false;
+  }
 
   @Input() displayRegisterDialog: boolean = false;
-  @Output() displayRegisterDialogChange:EventEmitter<boolean> = new EventEmitter<boolean>();
-  
+  @Output() displayRegisterDialogChange: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
+
   errormsg: boolean = false;
   authService: AuthService;
   ErrorMessage: string = '';
   username: string = '';
   email: string = '';
   password: string = '';
-constructor(authService: AuthService) {
+  constructor(authService: AuthService) {
     this.authService = authService;
   }
-   registerUser() {
+  registerUser() {
     if (
       this.username !== null &&
       this.username !== undefined &&
@@ -50,28 +50,26 @@ constructor(authService: AuthService) {
       this.password !== null &&
       this.password !== undefined
     ) {
-      //console.log(this.username, this.email, this.password);
       this.authService
         .register({
           userName: this.username,
           email: this.email,
           password: this.password,
         })
-        .then((response: any) => {
-          if (response && response.successCode === 200 && response.success) {
-            //console.log(response.message);
-            //console.log('User details:', response.data);
-            this.displayRegisterDialog = false;
-          } else {
+        .subscribe({
+          next: (res) => {
+            // navigate, show success, etc.
+            if (res && res['successCode'] === 200 && res['success']) {
+              this.displayRegisterDialog = false;
+            } else {
+              this.errormsg = true;
+              this.ErrorMessage = 'Registration failed';
+            }
+          },
+          error: (err) => {
             this.errormsg = true;
-            this.ErrorMessage = 'Registration failed';
-            //console.log('Registration failed');
-          }
-        })
-        .catch((error: any) => {
-          this.errormsg = true;
-          this.ErrorMessage = 'Registration failed due to unknown error';
-          //console.log('Registration failed due to unknown error');
+            this.ErrorMessage = 'Registration failed due to unknown error';
+          },
         });
     } else {
       this.errormsg = true;

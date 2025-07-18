@@ -18,6 +18,7 @@
         </div>
       </div>
     </div>
+    <p-message severity="error" *ngIf="errormsg"  [text]="ErrorMessage"  icon="pi pi-times-circle" styleClass="mb-2" />
   </ng-template>
   <ng-template #footer>
     <p-button label="Cancel" [text]="true" severity="secondary" (click)="Cancel()" />

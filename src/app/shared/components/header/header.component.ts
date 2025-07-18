@@ -8,7 +8,8 @@ import { MessageModule } from 'primeng/message';
 import { AuthService } from '@app/core/Services/AuthService/auth.service';
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
-import { RegistrationComponent } from "./register/registration/registration.component";
+import { RegistrationComponent } from './register/registration/registration.component';
+import { MenuItem } from 'primeng/api';
 @Component({
   selector: 'app-header',
   imports: [
@@ -20,8 +21,8 @@ import { RegistrationComponent } from "./register/registration/registration.comp
     FormsModule,
     MessageModule,
     LoginComponent,
-    RegistrationComponent
-],
+    RegistrationComponent,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
@@ -39,14 +40,24 @@ export class HeaderComponent {
   constructor(authService: AuthService) {
     this.authService = authService;
   }
+  menuItems: MenuItem[] = [
+    { label: 'Home', routerLink: '/', styleClass: 'p-menubar-start' },
+    { label: 'About', routerLink: '/about', styleClass: 'p-menubar-start' },
+    { label: 'Services', routerLink: '/services',styleClass: 'p-menubar-start'},
+    { label: 'Contact', routerLink: '/contact', styleClass: 'p-menubar-start' },
+    
+    { label: 'Profile',  routerLink: '/profile',visible: this.isLoggedIn, styleClass: 'p-menubar-end' },
+    { label: 'Logout', command: () => this.logout(), visible: this.isLoggedIn,styleClass: 'p-menubar-end'},
+    { label: 'Register', command: () => this.register(), visible: !this.isLoggedIn, styleClass: 'p-menubar-end'},
+    { label: 'Login', command: () => this.login(),visible: !this.isLoggedIn, styleClass: 'p-menubar-end' },
+  ];
   register() {
     this.displayRegisterDialog = true;
     this.username = '';
     this.email = '';
     this.password = '';
   }
-  resetLoginRegisterVisible($event: boolean)
-  {
+  resetLoginRegisterVisible($event: boolean) {
     console.log('resetLoginRegisterVisible called with:', $event);
     this.displayLoginDialog = false;
     this.displayRegisterDialog = false;
@@ -62,12 +73,13 @@ export class HeaderComponent {
     this.username = '';
     this.password = '';
   }
-  
+
   // Function to handle logout (optional)
   logout() {
     //remove access token to simulate logout from local storage and cookie
     localStorage.removeItem('accessToken');
-    document.cookie = 'accessToken=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
+    document.cookie =
+      'accessToken=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
     this.isLoggedIn = false;
   }
 }

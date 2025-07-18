@@ -1,34 +1,4 @@
-<p-menubar id="header" >
-  <ng-template #start>
-    <a class="p-menubar-item-link" href="#" target="_blank">
-      <span>Home</span>
-    </a>
-    <a class="p-menubar-item-link" href="#" target="_blank">
-      <span>About</span>
-    </a>
-    <a class="p-menubar-item-link" href="#" target="_blank">
-      <span>Services</span>
-    </a>
-    <a class="p-menubar-item-link" href="#" target="_blank">
-      <span>Contact</span>
-    </a>
-  </ng-template>
-  <ng-template #end>
-      <!-- Show login link when not logged in -->
-      <div class="grid"  *ngIf="!isLoggedIn">
-        <a class="col p-menubar-item-link" (click)="register()">
-          <span>Register</span>
-        </a>
-        <p-button label="Login" class="col p-menubar-item-button" (click)="login()"></p-button>
-      </div>
-      <!-- Show profile link when logged in -->
-      <div  class="grid" *ngIf="isLoggedIn">
-        <a class="col p-menubar-item-link" href="profile">
-          <span>Profile</span>
-        </a>
-        <p-button label="Logout" class="col p-menubar-item-button gap-4" (click)="logout()"></p-button><!-- Optional logout functionality -->
-      </div>
-  </ng-template>
+<p-menubar id="header" [model]="menuItems" >
 </p-menubar>
 <app-login [(displayLoginDialog)]="displayLoginDialog" (displayLoginDialogChange)="resetLoginRegisterVisible($event)" ></app-login>
 <app-registration [(displayRegisterDialog)]="displayRegisterDialog" (displayRegisterDialogChange)="resetLoginRegisterVisible($event)"></app-registration>

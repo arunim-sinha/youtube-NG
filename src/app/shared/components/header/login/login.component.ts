@@ -1,27 +1,28 @@
-import { Component, Input,Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { AuthService } from '@app/core/Services/AuthService/auth.service';
 import { FormsModule } from '@angular/forms';
+import { MessageModule } from 'primeng/message';
 @Component({
   selector: 'app-login',
-  imports: [DialogModule, ButtonModule , FormsModule],
+  imports: [DialogModule, ButtonModule, FormsModule, MessageModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
-Cancel() {
-  this.displayLoginDialog = false;
-  this.displayLoginDialogChange.emit(this.displayLoginDialog);
-  this.ErrorMessage = '';
-  this.username = '';
-  this.email = '';
-  this.password = '';
-
-}
+  Cancel() {
+    this.displayLoginDialog = false;
+    this.displayLoginDialogChange.emit(this.displayLoginDialog);
+    this.ErrorMessage = '';
+    this.username = '';
+    this.email = '';
+    this.password = '';
+  }
   authService: AuthService; //injected service
   @Input() displayLoginDialog: boolean = false;
-  @Output() displayLoginDialogChange: EventEmitter<boolean>  = new EventEmitter<boolean>(); 
+  @Output() displayLoginDialogChange: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
   username: string = '';
   email: string = '';
   password: string = '';
@@ -38,38 +39,37 @@ Cancel() {
       this.password !== null &&
       this.password !== undefined
     ) {
-      //console.log(this.username, this.password); // Log the email and password
-      this.authService
-        .login({ userName: this.username, password: this.password }) // Pass the email and password to the login method
-        .then((response: any) => {
-          if (response && response.successCode === 200 && response.success) {
-            //console.log(response.message);
-            //console.log('User details:', response.data);
-            this.displayLoginDialog = false;
-            this.isLoggedIn = true;
-            const accessToken = response.data.accessToken;
-            localStorage.setItem('token', accessToken);
-            document.cookie = `jwt=${accessToken}; path=/`;
-          } else {
+        this.authService.login({ userName: this.username, password: this.password }).subscribe({
+        next: res => {
+           if (res && res['successCode'] === 200 && res['success']) {
+             this.displayLoginDialog = false;
+             this.isLoggedIn = true;
+             const accessToken = res['data'].accessToken;
+             localStorage.setItem('token', accessToken);
+             document.cookie = `jwt=${accessToken}; path=/`;
+           }
+           else {
             this.errormsg = true;
             this.ErrorMessage = 'Login failed';
-            //console.log('Login failed');
+            //console.log(response);
             this.displayLoginDialog = false;
-            this.isLoggedIn = false;
+            this.displayLoginDialogChange.emit(this.displayLoginDialog);
+            this.isLoggedIn = true;
           }
-        })
-        .catch((error: any) => {
-          this.errormsg = true;
-          this.ErrorMessage = 'Login failed due to unknown error';
-          //console.log('Login failed due to unknown error');
-          this.displayLoginDialog = false;
-          this.isLoggedIn = false;
-        });
+          // navigate, show success, etc.
+        },
+        error: err => {
+            this.errormsg = true;
+            this.ErrorMessage = 'Login failed due to unknown error';
+            this.displayLoginDialog = true;
+            this.isLoggedIn = false;
+        }
+      });
     } else {
       this.errormsg = true;
       this.ErrorMessage = 'Login failed due to null or undefined inputs';
       //console.log('Login failed due to null or undefined inputs');
-      this.displayLoginDialog = false;
+      this.displayLoginDialog = true;
       this.isLoggedIn = false;
     }
   }
