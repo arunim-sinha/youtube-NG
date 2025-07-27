@@ -1,0 +1,11 @@
+.header-right {
+  display: flex;
+  align-items: center;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+}
+.p-menubar {
+  display: contents;
+}

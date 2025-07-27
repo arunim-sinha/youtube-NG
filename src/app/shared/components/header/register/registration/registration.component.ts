@@ -59,11 +59,12 @@ export class RegistrationComponent {
         .subscribe({
           next: (res) => {
             // navigate, show success, etc.
-            if (res && res['successCode'] === 200 && res['success']) {
+            if (res && res['successCode'] === 200 && res['success'] !== false) {
               this.displayRegisterDialog = false;
             } else {
               this.errormsg = true;
-              this.ErrorMessage = 'Registration failed';
+              this.ErrorMessage = res['message'] || 'Registration failed';
+              this.displayRegisterDialog = true;
             }
           },
           error: (err) => {

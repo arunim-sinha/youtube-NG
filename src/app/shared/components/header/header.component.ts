@@ -10,6 +10,8 @@ import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './register/registration/registration.component';
 import { MenuItem } from 'primeng/api';
+import { RouterModule } from '@angular/router';
+import {TemplateRef } from '@angular/core';
 @Component({
   selector: 'app-header',
   imports: [
@@ -22,11 +24,13 @@ import { MenuItem } from 'primeng/api';
     MessageModule,
     LoginComponent,
     RegistrationComponent,
+    RouterModule
   ],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css',
+  styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+[x: string]: any;
   authService: AuthService; //injected service
   isLoggedIn: boolean = false; // Set to false initially to simulate logged-out state
   displayLoginDialog: boolean = false;
@@ -46,16 +50,23 @@ export class HeaderComponent {
     { label: 'Services', routerLink: '/services',styleClass: 'p-menubar-start'},
     { label: 'Contact', routerLink: '/contact', styleClass: 'p-menubar-start' },
     
-    { label: 'Profile',  routerLink: '/profile',visible: this.isLoggedIn, styleClass: 'p-menubar-end' },
-    { label: 'Logout', command: () => this.logout(), visible: this.isLoggedIn,styleClass: 'p-menubar-end'},
-    { label: 'Register', command: () => this.register(), visible: !this.isLoggedIn, styleClass: 'p-menubar-end'},
-    { label: 'Login', command: () => this.login(),visible: !this.isLoggedIn, styleClass: 'p-menubar-end' },
+    { label: 'Profile',  routerLink: '/profile',visible: this.isLoggedIn, styleClass: '.p-menubar-end' },
+    { label: 'Logout', command: () => this.logout(), visible: this.isLoggedIn,styleClass: '.p-menubar-end'},
+    { label: 'Register', command: () => this.register(), visible: !this.isLoggedIn, styleClass: '.p-menubar-end'},
+    { label: 'Login', command: () => this.login(),visible: !this.isLoggedIn, styleClass: '.p-menubar-end' },
   ];
   register() {
     this.displayRegisterDialog = true;
     this.username = '';
     this.email = '';
     this.password = '';
+  }
+
+  get startMenuItems() {
+  return this.menuItems.filter(item => item.styleClass === 'p-menubar-start');
+}
+  get endMenuItems() {
+    return this.menuItems.filter(item => item.styleClass === '.p-menubar-end');
   }
   resetLoginRegisterVisible($event: boolean) {
     console.log('resetLoginRegisterVisible called with:', $event);

@@ -4,9 +4,10 @@ import { ButtonModule } from 'primeng/button';
 import { AuthService } from '@app/core/Services/AuthService/auth.service';
 import { FormsModule } from '@angular/forms';
 import { MessageModule } from 'primeng/message';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-login',
-  imports: [DialogModule, ButtonModule, FormsModule, MessageModule],
+  imports: [DialogModule, ButtonModule, FormsModule, MessageModule,CommonModule ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
@@ -15,6 +16,7 @@ export class LoginComponent {
     this.displayLoginDialog = false;
     this.displayLoginDialogChange.emit(this.displayLoginDialog);
     this.ErrorMessage = '';
+    this.errormsg = false;
     this.username = '';
     this.email = '';
     this.password = '';
@@ -41,24 +43,25 @@ export class LoginComponent {
     ) {
         this.authService.login({ userName: this.username, password: this.password }).subscribe({
         next: res => {
-           if (res && res['successCode'] === 200 && res['success']) {
+           if (res && res['successCode'] === 200 && res['success']!== false) {
              this.displayLoginDialog = false;
              this.isLoggedIn = true;
              const accessToken = res['data'].accessToken;
              localStorage.setItem('token', accessToken);
              document.cookie = `jwt=${accessToken}; path=/`;
+             this.displayLoginDialogChange.emit(this.displayLoginDialog);
            }
            else {
+            console.error('Login failed', res);
             this.errormsg = true;
-            this.ErrorMessage = 'Login failed';
-            //console.log(response);
-            this.displayLoginDialog = false;
-            this.displayLoginDialogChange.emit(this.displayLoginDialog);
-            this.isLoggedIn = true;
+            this.ErrorMessage = res['message'] || 'Login failed due to unknown error';
+            this.displayLoginDialog = true;
+            this.isLoggedIn = false;
           }
           // navigate, show success, etc.
         },
         error: err => {
+          console.error('Login failed', err);
             this.errormsg = true;
             this.ErrorMessage = 'Login failed due to unknown error';
             this.displayLoginDialog = true;

@@ -1,4 +1,31 @@
-<p-menubar id="header" [model]="menuItems" >
+<p-menubar id="header" class="p-menubar">
+  <ng-template pTemplate="start">
+    <div class="header-left">
+      <a *ngFor="let sitem of startMenuItems" pRipple class="p-menubar-item-content p-menubar-item-link"
+        [routerLink]="sitem.routerLink" [routerLinkActive]="['p-menuitem-link-active']"><span>{{ sitem.label }}</span>
+      </a>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="end">
+    <div class="header-right">
+      <ng-container *ngFor="let eitem of endMenuItems">
+        <a pRipple class="p-menubar-item-content p-menubar-item-link" [routerLink]="eitem.routerLink" [routerLinkActive]="['p-menuitem-link-active']"
+          *ngIf="eitem.routerLink && eitem.visible !== false">
+          <span>
+            {{ eitem.label }}
+          </span>
+        </a>
+        <a pRipple class="p-menubar-item-content p-menubar-item-link" (click)="eitem.command({ originalEvent: $event})" [routerLinkActive]="['p-menuitem-link-active']"
+          *ngIf="!eitem.routerLink && eitem.command && eitem.visible !== false">
+          <span>
+            {{ eitem.label }}
+          </span>
+        </a>
+      </ng-container>
+    </div>
+  </ng-template>
 </p-menubar>
-<app-login [(displayLoginDialog)]="displayLoginDialog" (displayLoginDialogChange)="resetLoginRegisterVisible($event)" ></app-login>
-<app-registration [(displayRegisterDialog)]="displayRegisterDialog" (displayRegisterDialogChange)="resetLoginRegisterVisible($event)"></app-registration>
+<app-login [(displayLoginDialog)]="displayLoginDialog"
+  (displayLoginDialogChange)="resetLoginRegisterVisible($event)"></app-login>
+<app-registration [(displayRegisterDialog)]="displayRegisterDialog"
+  (displayRegisterDialogChange)="resetLoginRegisterVisible($event)"></app-registration>
