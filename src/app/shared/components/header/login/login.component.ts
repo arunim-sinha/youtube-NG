@@ -49,7 +49,7 @@ export class LoginComponent {
              const accessToken = res['data'].accessToken;
              localStorage.setItem('token', accessToken);
              document.cookie = `jwt=${accessToken}; path=/`;
-             this.displayLoginDialogChange.emit(this.displayLoginDialog);
+             this.displayLoginDialogChange.emit(this.isLoggedIn);
            }
            else {
             console.error('Login failed', res);

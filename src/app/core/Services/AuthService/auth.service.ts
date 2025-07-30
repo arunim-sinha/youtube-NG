@@ -79,6 +79,7 @@ export class AuthService {
         return res;
       }),
       catchError((error) => {
+        console.error('Logout error:', error);
         return throwError(
           () => new Error(error?.error?.message || 'Logout failed')
         );
