@@ -10,12 +10,12 @@ import {
   withEventReplay,
 } from '@angular/platform-browser';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { authInterceptor } from './core/Interceptors/auth.interceptor';
+import { errorInterceptor } from './core/Interceptors/error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withInterceptors([errorInterceptor])),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
     provideAnimationsAsync(),
