@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { authInterceptor } from './core/Interceptors/auth.interceptor';
 import { AboutComponent } from './pages/about/about.component'; // Assuming AbortComponent is defined elsewhere
 import { authGuard } from './core/guard/auth.guard';
 export const routes: Routes = [

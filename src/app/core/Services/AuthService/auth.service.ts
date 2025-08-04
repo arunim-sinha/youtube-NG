@@ -4,16 +4,16 @@ import { environment } from 'environments/environment';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AuthResponse } from '@app/core/Models/auth.models';
-import { Console } from 'node:console';
+import { LocalStorageUtility } from '@app/core/Utils/LocalStorage';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,public storage:LocalStorageUtility) {}
 
   isLoggedIn(): Observable<boolean> {
-    const token = localStorage.getItem('token');
+    const token = this.storage.getToken();
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
