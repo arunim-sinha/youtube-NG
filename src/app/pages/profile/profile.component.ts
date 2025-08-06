@@ -11,8 +11,7 @@ export class ProfileComponent {
   constructor( private storage: LocalStorageUtility) {
     const token = this.storage.getToken();
     if (token) {
-      const decodedToken = JSON.parse(atob(token.split('.')[1]));
-      this.user = decodedToken;
+      this.user = this.storage.getUser();
     }
   }
 }

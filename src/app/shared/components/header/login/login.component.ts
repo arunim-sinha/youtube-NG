@@ -5,6 +5,7 @@ import { AuthService } from '@app/core/Services/AuthService/auth.service';
 import { FormsModule } from '@angular/forms';
 import { MessageModule } from 'primeng/message';
 import { CommonModule } from '@angular/common';
+import { CookieManager } from '@app/core/Utils/CookieManager';
 @Component({
   selector: 'app-login',
   imports: [DialogModule, ButtonModule, FormsModule, MessageModule,CommonModule ],
@@ -48,7 +49,8 @@ export class LoginComponent {
              this.isLoggedIn = true;
              const accessToken = res['data'].accessToken;
              localStorage.setItem('token', accessToken);
-             document.cookie = `jwt=${accessToken}; path=/`;
+              // Set the cookie with the access token
+              CookieManager.setCookie('jwt', accessToken, 1);
              this.displayLoginDialogChange.emit(this.isLoggedIn);
            }
            else {

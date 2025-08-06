@@ -11,6 +11,7 @@ import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './register/registration/registration.component';
 import { MenuItem } from 'primeng/api';
 import { RouterModule } from '@angular/router';
+import { CookieManager } from '@app/core/Utils/CookieManager';
 @Component({
   selector: 'app-header',
   imports: [
@@ -45,26 +46,9 @@ export class HeaderComponent implements OnInit {
   }
   ngOnInit() {
     try {
-      //const token =localStorage.getItem('token') || this.getCookie('jwt');
-      const token1 =
-        typeof window !== 'undefined' && window.localStorage
-          ? localStorage.getItem('token')
-          : null;
-      const token = token1 || this.getCookie('jwt');
-      if (token) {
-        this.authService
-          .isLoggedIn()
-          .pipe()
-          .subscribe({
-            next: (valid: boolean) => {
-              this.isLoggedIn = valid;
-              this.updateEndMenuItemsVisibility(valid);
-            },
-            error: () => {
-              this.isLoggedIn = false;
-              this.updateEndMenuItemsVisibility(false);
-            },
-          });
+      if (this.authService.isLoggedIn()) {
+        this.isLoggedIn = true;
+        this.updateEndMenuItemsVisibility(true);
       } else {
         this.isLoggedIn = false;
         this.updateEndMenuItemsVisibility(false);
@@ -74,16 +58,6 @@ export class HeaderComponent implements OnInit {
       this.ErrorMessage = 'An error occurred while initializing the header.';
       this.errormsg = true;
     }
-  }
-
-  getCookie(name: string): string | null {
-    if (typeof document === 'undefined') {
-      return null; // Return null if document is not available (e.g., during server-side rendering)
-    }
-    const match = document.cookie.match(
-      new RegExp('(^| )' + name + '=([^;]+)')
-    );
-    return match ? match[2] : null;
   }
 
   menuItems: MenuItem[] = [
@@ -171,7 +145,7 @@ export class HeaderComponent implements OnInit {
         this.password = '';
         //remove access token to simulate logout from local storage and cookie
         localStorage.removeItem('token');
-        document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
+        CookieManager.deleteCookie('jwt');
         window.location.href = '/';
       },
       error: (err) => {

@@ -5,26 +5,24 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AuthResponse } from '@app/core/Models/auth.models';
 import { LocalStorageUtility } from '@app/core/Utils/LocalStorage';
+import { CookieManager } from '@app/core/Utils/CookieManager';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient,public storage:LocalStorageUtility) {}
+  constructor(private http: HttpClient, public storage: LocalStorageUtility) {}
 
-  isLoggedIn(): Observable<boolean> {
-    const token = this.storage.getToken();
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    });
-
-    return this.http.get(`${this.apiUrl}/userProfile`, { headers }).pipe(
-      map(() => true),
-      catchError(() => {
-        return [false];
-      })
-    );
+  isLoggedIn(): boolean {
+    let token = this.storage.getToken();
+    if (!token) {
+      token = CookieManager.getCookie('jwt'); // Check cookie if localStorage is not available
+      if (!token) {
+        return false; // No token means not logged in
+      }
+    }
+    // Optionally, you can add more checks like token expiration here
+    return !this.storage.isTokenExpired(); // Check if the token is expired
   }
 
   login(data: {
@@ -102,7 +100,6 @@ export class AuthService {
         return res;
       }),
       catchError((error) => {
-        
         if (error?.status >= 500) {
           // Handle server errors
           return throwError(
@@ -112,7 +109,7 @@ export class AuthService {
               )
           );
         } else if (error?.status >= 400 && error?.status < 500) {
-          console.error( error);
+          console.error(error);
           // Handle client errors: return default AuthResponse
           const defaultAuthResponse: AuthResponse = {
             token: '', // No token on error
