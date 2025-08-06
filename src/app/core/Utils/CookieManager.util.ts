@@ -16,7 +16,6 @@ export class CookieManager {
     );
     return match ? match[2] : null;
   }
-
   // Method to delete a cookie by name
   static deleteCookie(name: string): void {
     document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;

@@ -5,7 +5,7 @@ import { AuthService } from '@app/core/Services/AuthService/auth.service';
 import { FormsModule } from '@angular/forms';
 import { MessageModule } from 'primeng/message';
 import { CommonModule } from '@angular/common';
-import { CookieManager } from '@app/core/Utils/CookieManager';
+import { CookieManager } from '@app/core/Utils/CookieManager.util';
 @Component({
   selector: 'app-login',
   imports: [DialogModule, ButtonModule, FormsModule, MessageModule,CommonModule ],

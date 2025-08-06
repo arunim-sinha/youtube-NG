@@ -4,14 +4,14 @@ import { environment } from 'environments/environment';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AuthResponse } from '@app/core/Models/auth.models';
-import { LocalStorageUtility } from '@app/core/Utils/LocalStorage';
-import { CookieManager } from '@app/core/Utils/CookieManager';
+import { LocalStorageUtil } from '@app/core/Utils/LocalStorage.util';
+import { CookieManager } from '@app/core/Utils/CookieManager.util';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient, public storage: LocalStorageUtility) {}
+  constructor(private http: HttpClient, public storage: LocalStorageUtil) {}
 
   isLoggedIn(): boolean {
     let token = this.storage.getToken();

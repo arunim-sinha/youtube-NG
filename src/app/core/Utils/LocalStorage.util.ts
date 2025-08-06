@@ -4,7 +4,7 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 @Injectable({
   providedIn: 'root', // This makes it available application-wide
 })
-export class LocalStorageUtility {
+export class LocalStorageUtil {
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
   getToken(): string | null {
     if (isPlatformBrowser(this.platformId)) {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LocalStorageUtility } from '@app/core/Utils/LocalStorage';
+import { LocalStorageUtil } from '@app/core/Utils/LocalStorage.util';
 
 @Component({
   selector: 'app-profile',
@@ -8,7 +8,7 @@ import { LocalStorageUtility } from '@app/core/Utils/LocalStorage';
 })
 export class ProfileComponent {
   user: any = {};
-  constructor( private storage: LocalStorageUtility) {
+  constructor( private storage: LocalStorageUtil) {
     const token = this.storage.getToken();
     if (token) {
       this.user = this.storage.getUser();

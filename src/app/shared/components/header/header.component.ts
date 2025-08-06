@@ -11,7 +11,7 @@ import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './register/registration/registration.component';
 import { MenuItem } from 'primeng/api';
 import { RouterModule } from '@angular/router';
-import { CookieManager } from '@app/core/Utils/CookieManager';
+import { CookieManager } from '@app/core/Utils/CookieManager.util';
 @Component({
   selector: 'app-header',
   imports: [
