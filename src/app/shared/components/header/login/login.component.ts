@@ -32,7 +32,7 @@ export class LoginComponent {
   isLoggedIn: boolean = false; // Set to false initially to simulate logged-out state
   ErrorMessage: string = '';
   errormsg: boolean = false;
-  constructor(authService: AuthService) {
+  constructor(authService: AuthService, private cookie: CookieManager) {
     this.authService = authService;
   }
   loginUser() {
@@ -50,7 +50,7 @@ export class LoginComponent {
              const accessToken = res['data'].accessToken;
              localStorage.setItem('token', accessToken);
               // Set the cookie with the access token
-              CookieManager.setCookie('jwt', accessToken, 1);
+              this.cookie.setCookie('jwt', accessToken, 1);
              this.displayLoginDialogChange.emit(this.isLoggedIn);
            }
            else {

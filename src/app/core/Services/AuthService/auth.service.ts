@@ -11,12 +11,12 @@ import { CookieManager } from '@app/core/Utils/CookieManager.util';
 export class AuthService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient, public storage: LocalStorageUtil) {}
+  constructor(private http: HttpClient, public storage: LocalStorageUtil,private cookie :CookieManager) {}
 
   isLoggedIn(): boolean {
     let token = this.storage.getToken();
     if (!token) {
-      token = CookieManager.getCookie('jwt'); // Check cookie if localStorage is not available
+      token = this.cookie.getCookie('jwt'); // Check cookie if localStorage is not available
       if (!token) {
         return false; // No token means not logged in
       }

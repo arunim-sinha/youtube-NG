@@ -41,7 +41,7 @@ export class HeaderComponent implements OnInit {
   ErrorMessage: string = '';
   errormsg: boolean = false;
 
-  constructor(authService: AuthService) {
+  constructor(authService: AuthService, private cookie: CookieManager) {
     this.authService = authService;
   }
   ngOnInit() {
@@ -145,7 +145,7 @@ export class HeaderComponent implements OnInit {
         this.password = '';
         //remove access token to simulate logout from local storage and cookie
         localStorage.removeItem('token');
-        CookieManager.deleteCookie('jwt');
+        this.cookie.deleteCookie('jwt');
         window.location.href = '/';
       },
       error: (err) => {
