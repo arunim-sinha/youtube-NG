@@ -34,7 +34,6 @@ export class AuthService {
     }
     return this.http.post(`${this.apiUrl}/login`, data).pipe(
       map((res: any) => {
-        console.log(res);
         localStorage.setItem('token', res.token);
         return res;
       }),

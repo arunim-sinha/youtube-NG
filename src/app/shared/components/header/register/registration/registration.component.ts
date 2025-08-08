@@ -75,7 +75,6 @@ export class RegistrationComponent {
     } else {
       this.errormsg = true;
       this.ErrorMessage = 'Registration failed due to null or undefined inputs';
-      //console.log('Registration failed due to null or undefined inputs');
     }
   }
 }

@@ -73,7 +73,6 @@ export class LoginComponent {
     } else {
       this.errormsg = true;
       this.ErrorMessage = 'Login failed due to null or undefined inputs';
-      //console.log('Login failed due to null or undefined inputs');
       this.displayLoginDialog = true;
       this.isLoggedIn = false;
     }

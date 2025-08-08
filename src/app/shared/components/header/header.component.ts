@@ -113,7 +113,6 @@ export class HeaderComponent implements OnInit {
     );
   }
   resetLoginRegisterVisible($event: boolean) {
-    console.log('resetLoginRegisterVisible called with:', $event);
     this.isLoggedIn = $event;
     this.updateEndMenuItemsVisibility($event);
     this.displayLoginDialog = false;
@@ -135,7 +134,6 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.authService.logout().subscribe({
       next: (res) => {
-        console.log('Logout successful:', res);
         this.isLoggedIn = false;
         this.updateEndMenuItemsVisibility(false);
         this.displayLoginDialog = false;
