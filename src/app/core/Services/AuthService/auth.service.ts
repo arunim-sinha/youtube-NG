@@ -14,15 +14,20 @@ export class AuthService {
   constructor(private http: HttpClient, public storage: LocalStorageUtil,private cookie :CookieManager) {}
 
   isLoggedIn(): boolean {
-    let token = this.storage.getToken();
-    if (!token) {
-      token = this.cookie.getCookie('jwt'); // Check cookie if localStorage is not available
+    try {
+      let token = this.storage.getToken();
       if (!token) {
-        return false; // No token means not logged in
+        token = this.cookie.getCookie('jwt'); // Check cookie if localStorage is not available
+        if (!token) {
+          return false; // No token means not logged in
+        }
       }
+      // Optionally, you can add more checks like token expiration here
+      return !this.storage.isTokenExpired(); // Check if the token is expired
+    } catch (error) {
+      console.error('Error checking if user is logged in:', error);
+      return false; // Return false on error
     }
-    // Optionally, you can add more checks like token expiration here
-    return !this.storage.isTokenExpired(); // Check if the token is expired
   }
 
   login(data: {

@@ -132,26 +132,32 @@ export class HeaderComponent implements OnInit {
 
   // Function to handle logout (optional)
   logout() {
-    this.authService.logout().subscribe({
-      next: (res) => {
-        this.isLoggedIn = false;
-        this.updateEndMenuItemsVisibility(false);
-        this.displayLoginDialog = false;
-        this.displayRegisterDialog = false;
-        this.username = '';
-        this.email = '';
-        this.password = '';
-        //remove access token to simulate logout from local storage and cookie
-        localStorage.removeItem('token');
-        this.cookie.deleteCookie('jwt');
-        window.location.href = '/';
-      },
-      error: (err) => {
-        console.error('Logout failed:', err);
-        this.ErrorMessage = 'Logout failed. Please try again.';
-        this.errormsg = true;
-      },
-    });
+    try {
+      this.authService.logout().subscribe({
+        next: (res) => {
+          this.isLoggedIn = false;
+          this.updateEndMenuItemsVisibility(false);
+          this.displayLoginDialog = false;
+          this.displayRegisterDialog = false;
+          this.username = '';
+          this.email = '';
+          this.password = '';
+          //remove access token to simulate logout from local storage and cookie
+          localStorage.removeItem('token');
+          this.cookie.deleteCookie('jwt');
+          window.location.href = '/';
+        },
+        error: (err) => {
+          console.error('Logout failed:', err);
+          this.ErrorMessage = 'Logout failed. Please try again.';
+          this.errormsg = true;
+        },
+      });
+    } catch (error) {
+      console.error('Error in logout method:', error);
+      this.ErrorMessage = 'An error occurred while logging out.';
+      this.errormsg = true;
+    }
   }
 
   updateEndMenuItemsVisibility(isLoggedIn: boolean) {
