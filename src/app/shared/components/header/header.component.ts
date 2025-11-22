@@ -12,6 +12,13 @@ import { RegistrationComponent } from './register/registration/registration.comp
 import { MenuItem } from 'primeng/api';
 import { RouterModule } from '@angular/router';
 import { CookieManager } from '@app/core/Utils/CookieManager.util';
+import { PrimeNG } from 'primeng/config';
+import Aura from '@primeng/themes/aura';
+import Lara from '@primeng/themes/lara';
+import Nora from '@primeng/themes/nora';
+import Material from '@primeng/themes/material';
+import { SelectModule } from 'primeng/select';
+
 @Component({
   selector: 'app-header',
   imports: [
@@ -25,6 +32,7 @@ import { CookieManager } from '@app/core/Utils/CookieManager.util';
     LoginComponent,
     RegistrationComponent,
     RouterModule,
+    SelectModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
@@ -41,7 +49,17 @@ export class HeaderComponent implements OnInit {
   ErrorMessage: string = '';
   errormsg: boolean = false;
 
-  constructor(authService: AuthService, private cookie: CookieManager) {
+  themes = [
+    { label: 'Aura', value: Aura },
+    { label: 'Lara', value: Lara },
+    { label: 'Nora', value: Nora },
+    { label: 'Material', value: Material }
+  ];
+
+  selectedTheme: any = this.themes[1]; // Default to Lara
+  isDarkMode: boolean = false;
+
+  constructor(authService: AuthService, private cookie: CookieManager, private primeng: PrimeNG) {
     this.authService = authService;
   }
   ngOnInit() {
@@ -57,6 +75,20 @@ export class HeaderComponent implements OnInit {
       console.error('Error in ngOnInit:', error);
       this.ErrorMessage = 'An error occurred while initializing the header.';
       this.errormsg = true;
+    }
+  }
+
+  changeTheme(theme: any) {
+    this.primeng.theme.set({ preset: theme.value });
+  }
+
+  toggleDarkMode() {
+    this.isDarkMode = !this.isDarkMode;
+    const element = document.querySelector('html');
+    if (this.isDarkMode) {
+      element?.classList.add('app-dark');
+    } else {
+      element?.classList.remove('app-dark');
     }
   }
 

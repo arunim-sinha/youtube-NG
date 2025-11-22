@@ -1,30 +1,46 @@
 <p-menubar id="header" class="p-menubar">
   <ng-template pTemplate="start">
     <div class="header-left">
-      <a *ngFor="let sitem of startMenuItems" pRipple class="p-menubar-item-content p-menubar-item-link"
-        [routerLink]="sitem.routerLink" [routerLinkActive]="['p-menuitem-link-active']"><span>{{ sitem.label }}</span>
+      @for (sitem of startMenuItems; track sitem.label) {
+      <a pRipple class="p-menubar-item-content p-menubar-item-link" [routerLink]="sitem.routerLink"
+        [routerLinkActive]="['p-menuitem-link-active']"><span>{{ sitem.label }}</span>
       </a>
+      }
     </div>
   </ng-template>
   <ng-template pTemplate="end">
-    <div class="header-right">
-      <ng-container *ngFor="let eitem of endMenuItems">
-        <a *ngIf="eitem.routerLink != null && eitem.visible" pRipple
-          class="p-menubar-item-content p-menubar-item-link" [routerLink]="eitem.routerLink"
+    <div class="header-right" style="display: flex; align-items: center; gap: 10px;">
+      <div class="theme-switcher">
+        <p-select [options]="themes" [(ngModel)]="selectedTheme" optionLabel="label"
+          (onChange)="changeTheme($event.value)" placeholder="Select a Theme" class="w-full md:w-56" />
+      </div>
+      <p-button [icon]="isDarkMode ? 'pi pi-moon' : 'pi pi-sun'" [rounded]="true" [text]="true"
+        (onClick)="toggleDarkMode()"></p-button>
+      @for (eitem of endMenuItems; track eitem.label) {
+      <ng-container>
+        @if (eitem.routerLink != null && eitem.visible) {
+        <a pRipple class="p-menubar-item-content p-menubar-item-link" [routerLink]="eitem.routerLink"
           [routerLinkActive]="['p-menuitem-link-active']">
           <span>{{ eitem.label }}</span>
         </a>
-        <a pRipple
-          class="p-menubar-item-content p-menubar-item-link" (click)="eitem.command({originalEvent: $event})"
-          *ngIf="eitem.routerLink == null && eitem.command!= null && eitem.visible" 
+        }
+        @if (eitem.routerLink == null && eitem.command!= null && eitem.visible) {
+        <a pRipple class="p-menubar-item-content p-menubar-item-link" (click)="eitem.command({originalEvent: $event})"
           [routerLinkActive]="['p-menuitem-link-active']">
           <span>{{ eitem.label }}</span>
         </a>
+        }
       </ng-container>
+      }
     </div>
   </ng-template>
 </p-menubar>
+
+@defer (on idle) {
 <app-login [(displayLoginDialog)]="displayLoginDialog"
   (displayLoginDialogChange)="resetLoginRegisterVisible($event)"></app-login>
 <app-registration [(displayRegisterDialog)]="displayRegisterDialog"
   (displayRegisterDialogChange)="resetLoginRegisterVisible($event)"></app-registration>
+} @placeholder {
+<!-- Placeholder not strictly needed for on idle, but keeping empty is fine -->
+}

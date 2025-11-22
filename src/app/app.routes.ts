@@ -1,21 +1,18 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { ProfileComponent } from './pages/profile/profile.component';
-import { AboutComponent } from './pages/about/about.component'; // Assuming AbortComponent is defined elsewhere
 import { authGuard } from './core/guard/auth.guard';
+
 export const routes: Routes = [
   {
     path: 'home',
-    component: HomeComponent,
+    loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent),
   },
   {
     path: 'about',
-    component:AboutComponent, // Assuming AbortComponent is defined elsewhere
-  }
-  ,
+    loadComponent: () => import('./pages/about/about.component').then(m => m.AboutComponent),
+  },
   {
     path: 'profile',
-    component: ProfileComponent,
+    loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent),
     canActivate: [authGuard],
   },
   { path: '**', redirectTo: 'home' },

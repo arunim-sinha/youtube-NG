@@ -2,7 +2,7 @@ import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG, ThemeProvider } from 'primeng/config';
-import Aura from '@primeng/themes/aura';
+import Lara from '@primeng/themes/lara';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app.routes';
 import {
@@ -22,7 +22,10 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     providePrimeNG({
       theme: {
-        preset: Aura
+        preset: Lara,
+        options: {
+          darkModeSelector: '.app-dark'
+        }
       }
     }),
   ],
