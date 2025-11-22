@@ -79,7 +79,12 @@ export class HeaderComponent implements OnInit {
   }
 
   changeTheme(theme: any) {
-    this.primeng.theme.set({ preset: theme.value });
+    this.primeng.theme.set({
+      preset: theme.value,
+      options: {
+        darkModeSelector: '.app-dark',
+      },
+    });
   }
 
   toggleDarkMode() {
