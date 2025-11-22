@@ -1,2 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import "primeicons/primeicons.css";
+
+body {
+    background-color: var(--surface-ground);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    margin: 5px;
+    padding: 5px;
+    min-height: 100vh;
+}
