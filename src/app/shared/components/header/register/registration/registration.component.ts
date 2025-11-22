@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { MessageModule } from 'primeng/message';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '@app/core/Services/AuthService/auth.service';
 @Component({
@@ -10,71 +10,79 @@ import { AuthService } from '@app/core/Services/AuthService/auth.service';
   imports: [
     DialogModule,
     ButtonModule,
+    ButtonModule,
     MessageModule,
-    FormsModule,
+    ReactiveFormsModule,
     CommonModule,
   ],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.css',
 })
 export class RegistrationComponent {
-  Cancel() {
-    this.displayRegisterDialog = false;
-    this.displayRegisterDialogChange.emit(this.displayRegisterDialog);
-    this.ErrorMessage = '';
-    this.username = '';
-    this.email = '';
-    this.password = '';
-    this.errormsg = false;
-  }
-
   @Input() displayRegisterDialog: boolean = false;
   @Output() displayRegisterDialogChange: EventEmitter<boolean> =
     new EventEmitter<boolean>();
 
+  registerForm: FormGroup;
+  loading: boolean = false;
   errormsg: boolean = false;
-  authService: AuthService;
   ErrorMessage: string = '';
-  username: string = '';
-  email: string = '';
-  password: string = '';
-  constructor(authService: AuthService) {
-    this.authService = authService;
+
+  constructor(
+    private authService: AuthService,
+    private fb: FormBuilder
+  ) {
+    this.registerForm = this.fb.group({
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+    });
   }
+
+  Cancel() {
+    this.displayRegisterDialog = false;
+    this.displayRegisterDialogChange.emit(this.displayRegisterDialog);
+    this.resetForm();
+  }
+
+  resetForm() {
+    this.registerForm.reset();
+    this.ErrorMessage = '';
+    this.errormsg = false;
+    this.loading = false;
+  }
+
   registerUser() {
-    if (
-      this.username !== null &&
-      this.username !== undefined &&
-      this.email !== null &&
-      this.email !== undefined &&
-      this.password !== null &&
-      this.password !== undefined
-    ) {
-      this.authService
-        .register({
-          userName: this.username,
-          email: this.email,
-          password: this.password,
-        })
-        .subscribe({
-          next: (res) => {
-            // navigate, show success, etc.
-            if (res && res['successCode'] === 200 && res['success'] !== false) {
-              this.displayRegisterDialog = false;
-            } else {
-              this.errormsg = true;
-              this.ErrorMessage = res['message'] || 'Registration failed';
-              this.displayRegisterDialog = true;
-            }
-          },
-          error: (err) => {
-            this.errormsg = true;
-            this.ErrorMessage = 'Registration failed due to unknown error';
-          },
-        });
-    } else {
-      this.errormsg = true;
-      this.ErrorMessage = 'Registration failed due to null or undefined inputs';
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
+      return;
     }
+
+    this.loading = true;
+    this.errormsg = false;
+    const { username, email, password } = this.registerForm.value;
+
+    this.authService
+      .register({
+        userName: username,
+        email: email,
+        password: password,
+      })
+      .subscribe({
+        next: (res) => {
+          this.loading = false;
+          if (res && res['successCode'] === 200 && res['success'] !== false) {
+            this.Cancel();
+          } else {
+            this.errormsg = true;
+            this.ErrorMessage = res['message'] || 'Registration failed';
+          }
+        },
+        error: (err) => {
+          this.loading = false;
+          this.errormsg = true;
+          this.ErrorMessage = 'Registration failed due to unknown error';
+        },
+      });
   }
 }

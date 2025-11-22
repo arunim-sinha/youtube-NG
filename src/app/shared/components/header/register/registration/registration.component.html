@@ -1,33 +1,45 @@
-<p-dialog id="registerDialog" [(visible)]="displayRegisterDialog" [modal]="true" (visibleChange)="displayRegisterDialogChange.emit($event)" >
+<p-dialog id="registerDialog" [(visible)]="displayRegisterDialog" [modal]="true" (visibleChange)="Cancel()">
   <ng-template #header>
     <span class="font-bold text-xl">Register</span>
   </ng-template>
   <ng-template #content>
     <span>Fill in the details.</span>
-    <div class="fieldgrid">
+    <div class="fieldgrid" [formGroup]="registerForm">
       <div class="field col mb-0">
         <div class="font-bold">Username</div>
         <div class="flex-auto">
-          <input pInputText id="username" class="p-inputtext-sm" autocomplete="off" [(ngModel)]="username" />
+          <input pInputText id="username" class="p-inputtext-sm" autocomplete="off" formControlName="username" />
+          <small class="p-error block"
+            *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">Username is
+            required.</small>
         </div>
       </div>
       <div class="field col mb-0">
         <div class="font-bold">Email</div>
         <div class="flex-auto">
-          <input pInputText id="email" class="p-inputtext-sm" autocomplete="off" [(ngModel)]="email"  type="email" />
+          <input pInputText id="email" class="p-inputtext-sm" autocomplete="off" formControlName="email" type="email" />
+          <small class="p-error block" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+            <span *ngIf="registerForm.get('email')?.errors?.['required']">Email is required.</span>
+            <span *ngIf="registerForm.get('email')?.errors?.['email']">Invalid email format.</span>
+          </small>
         </div>
       </div>
       <div class="field col mb-0">
         <div class="font-bold">Password</div>
         <div class="flex-auto">
-          <input type="password" pInputText id="password" class="p-inputtext-sm" autocomplete="off" [(ngModel)]="password" type="password" />
+          <input type="password" pInputText id="password" class="p-inputtext-sm" autocomplete="off"
+            formControlName="password" />
+          <small class="p-error block"
+            *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">Password is
+            required.</small>
         </div>
       </div>
     </div>
-    <p-message severity="error" *ngIf="errormsg"  [text]="ErrorMessage"  icon="pi pi-times-circle" styleClass="mb-2" />
+    <p-message severity="error" *ngIf="errormsg" [text]="ErrorMessage" icon="pi pi-times-circle" styleClass="mb-2" />
   </ng-template>
   <ng-template #footer>
     <p-button label="Cancel" [text]="true" severity="secondary" (click)="Cancel()" />
-    <p-button label="Save" [outlined]="true" severity="secondary" (click)="registerUser()" />
+    <p-button label="Save" [outlined]="true" severity="secondary" (click)="registerUser()" [loading]="loading"
+      [disabled]="loading" />
   </ng-template>
 </p-dialog>
