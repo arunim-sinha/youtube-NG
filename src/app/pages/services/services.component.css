@@ -1,0 +1,271 @@
+.services-container {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.page-title {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+.loan-form-card {
+    margin-bottom: 2rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-field label {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+
+.current-emi {
+    padding: 0.75rem;
+    background: var(--highlight-bg);
+    border-radius: 6px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.scenarios-tabs {
+    margin-top: 2rem;
+}
+
+/* Summary Cards */
+.summary-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem 0;
+}
+
+.summary-card {
+    border: 2px solid var(--surface-border);
+    border-radius: 8px;
+}
+
+.summary-card.reduce-term {
+    border-color: var(--blue-400);
+}
+
+.summary-card.reduce-emi {
+    border-color: var(--green-400);
+}
+
+.summary-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--surface-border);
+}
+
+.summary-field:last-child {
+    border-bottom: none;
+}
+
+.summary-field label {
+    font-weight: 500;
+    color: var(--text-color-secondary);
+    font-size: 0.9rem;
+}
+
+.readonly-value {
+    font-weight: 700;
+    color: var(--text-color);
+    font-size: 1.1rem;
+}
+
+.highlight-zero {
+    color: var(--text-color-secondary);
+}
+
+.highlight-savings {
+    color: var(--green-600);
+    background: var(--green-50);
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+}
+
+/* Table Headers - Enhanced for better visibility */
+.table-header {
+    padding: 1.5rem 1rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-600));
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-header h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+.scenario-description {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: var(--surface-100);
+    border-left: 4px solid var(--primary-color);
+    border-radius: 4px;
+    font-size: 1rem;
+    color: var(--text-color-secondary);
+}
+
+.savings {
+    color: var(--green-500);
+    font-weight: 700;
+}
+
+/* Chart Container */
+.chart-container {
+    padding: 2rem;
+}
+
+.chart-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--surface-card);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Amortization Schedule Styling */
+.prepayment-col {
+    font-weight: 600;
+}
+
+.highlight-prepayment {
+    background: var(--yellow-100);
+    color: var(--yellow-900);
+    font-weight: 700;
+}
+
+.prepayment-row {
+    background: var(--yellow-50) !important;
+}
+
+.prepayment-row:hover {
+    background: var(--yellow-100) !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 1.8rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .current-emi {
+        font-size: 1.2rem;
+    }
+
+    .summary-container {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-wrapper {
+        padding: 1rem;
+    }
+
+    .table-header h3 {
+        font-size: 1.25rem;
+    }
+}
+
+/* Table styling enhancements - Column headers */
+::ng-deep .p-datatable {
+    font-size: 0.95rem;
+}
+
+::ng-deep .p-datatable .p-datatable-thead>tr>th {
+    background: var(--primary-color);
+    color: white;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+::ng-deep .p-datatable .p-datatable-thead>tr>th:last-child {
+    border-right: none;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+    padding: 0.75rem 1rem;
+    text-align: center;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody>tr:hover {
+    background: var(--surface-100);
+}
+
+::ng-deep .p-datatable .p-datatable-caption {
+    background: transparent;
+    border: none;
+    padding: 0 0 1rem 0;
+}
+
+/* Pagination styling */
+::ng-deep .p-paginator {
+    padding: 1rem;
+    background: var(--surface-50);
+}
+
+::ng-deep .p-paginator .p-paginator-current {
+    color: var(--text-color-secondary);
+    font-size: 0.9rem;
+}
+
+/* Card styling */
+::ng-deep .p-card .p-card-header {
+    font-size: 1.25rem;
+    font-weight: 600;
+    padding: 1.25rem;
+    background: var(--surface-100);
+}
+
+::ng-deep .p-card .p-card-body {
+    padding: 1.5rem;
+}
+
+::ng-deep .summary-card .p-card-header {
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+::ng-deep .summary-card .p-card-body {
+    padding: 1rem;
+}

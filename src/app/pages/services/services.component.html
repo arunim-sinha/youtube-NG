@@ -1,0 +1,266 @@
+<div class="services-container">
+    <h1 class="page-title">EMI Calculator - Reduce EMI or Tenure</h1>
+
+    <!-- Input Form -->
+    <p-card header="Loan Details" styleClass="loan-form-card">
+        <div class="form-grid">
+            <div class="form-field">
+                <label for="loanAmount">Loan Amount (₹)</label>
+                <p-inputnumber id="loanAmount" [(ngModel)]="loanAmount" mode="currency" currency="INR" locale="en-IN"
+                    [min]="0">
+                </p-inputnumber>
+            </div>
+
+            <div class="form-field">
+                <label for="interestRate">Interest Rate (% p.a.)</label>
+                <p-inputnumber id="interestRate" [(ngModel)]="interestRate" [min]="0" [max]="30" [minFractionDigits]="2"
+                    [maxFractionDigits]="2" suffix="%">
+                </p-inputnumber>
+            </div>
+
+            <div class="form-field">
+                <label for="tenure">Loan Tenure (Years)</label>
+                <p-inputnumber id="tenure" [(ngModel)]="tenureYears" [min]="1" [max]="30">
+                </p-inputnumber>
+            </div>
+
+            <div class="form-field">
+                <label>Current EMI</label>
+                <div class="current-emi">₹{{ currentEMI | number:'1.2-2' }}</div>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <p-button label="Calculate Scenarios" icon="pi pi-calculator" (onClick)="onCalculate()" severity="primary">
+            </p-button>
+        </div>
+    </p-card>
+
+    <!-- Scenarios Display -->
+    <p-tabView styleClass="scenarios-tabs">
+        <!-- Summary Tab -->
+        <p-tabPanel header="Summary">
+            <div class="summary-container">
+                <!-- No Prepayment Card -->
+                <p-card header="No Prepayment" styleClass="summary-card">
+                    <div class="summary-field">
+                        <label>Total Amount Paid</label>
+                        <div class="readonly-value">₹{{ noPrepayment.totalAmountPaid | number:'1.2-2' }}</div>
+                    </div>
+                    <div class="summary-field">
+                        <label>Principal Paid</label>
+                        <div class="readonly-value">₹{{ noPrepayment.principalPaid | number:'1.2-2' }}</div>
+                    </div>
+                    <div class="summary-field">
+                        <label>Interest Paid</label>
+                        <div class="readonly-value">₹{{ noPrepayment.interestPaid | number:'1.2-2' }}</div>
+                    </div>
+                    <div class="summary-field">
+                        <label>Amount Saved</label>
+                        <div class="readonly-value highlight-zero">₹{{ noPrepayment.amountSaved | number:'1.2-2' }}
+                        </div>
+                    </div>
+                    <div class="summary-field">
+                        <label>Loan paid in (yrs)?</label>
+                        <div class="readonly-value">{{ noPrepayment.loanPaidInYears | number:'1.0-0' }}</div>
+                    </div>
+                </p-card>
+
+                <!-- Reduce Term Card -->
+                <p-card header="Reduce Term" styleClass="summary-card reduce-term">
+                    <div class="summary-field">
+                        <label>Total Amount Paid</label>
+                        <div class="readonly-value">₹{{ reduceTerm.totalAmountPaid | number:'1.2-2' }}</div>
+                    </div>
+                    <div class="summary-field">
+                        <label>Principal Paid</label>
+                        <div class="readonly-value">₹{{ reduceTerm.principalPaid | number:'1.2-2' }}</div>
+                    </div>
+                    <div class="summary-field">
+                        <label>Interest Paid</label>
+                        <div class="readonly-value">₹{{ reduceTerm.interestPaid | number:'1.2-2' }}</div>
+                    </div>
+                    <div class="summary-field">
+                        <label>Amount Saved</label>
+                        <div class="readonly-value highlight-savings">₹{{ reduceTerm.amountSaved | number:'1.2-2' }}
+                        </div>
+                    </div>
+                    <div class="summary-field">
+                        <label>Loan paid in (yrs)?</label>
+                        <div class="readonly-value">{{ reduceTerm.loanPaidInYears | number:'1.0-0' }}</div>
+                    </div>
+                </p-card>
+
+                <!-- Reduce EMI Card -->
+                <p-card header="Reduce EMI" styleClass="summary-card reduce-emi">
+                    <div class="summary-field">
+                        <label>Total Amount Paid</label>
+                        <div class="readonly-value">₹{{ reduceEMI.totalAmountPaid | number:'1.2-2' }}</div>
+                    </div>
+                    <div class="summary-field">
+                        <label>Principal Paid</label>
+                        <div class="readonly-value">₹{{ reduceEMI.principalPaid | number:'1.2-2' }}</div>
+                    </div>
+                    <div class="summary-field">
+                        <label>Interest Paid</label>
+                        <div class="readonly-value">₹{{ reduceEMI.interestPaid | number:'1.2-2' }}</div>
+                    </div>
+                    <div class="summary-field">
+                        <label>Amount Saved</label>
+                        <div class="readonly-value highlight-savings">₹{{ reduceEMI.amountSaved | number:'1.2-2' }}
+                        </div>
+                    </div>
+                    <div class="summary-field">
+                        <label>Loan paid in (yrs)?</label>
+                        <div class="readonly-value">{{ reduceEMI.loanPaidInYears | number:'1.0-0' }}</div>
+                    </div>
+                </p-card>
+            </div>
+        </p-tabPanel>
+
+        <!-- Reduce EMI Scenarios Tab -->
+        <p-tabPanel header="Reduce EMI (Scenarios)">
+            <p-card>
+                <p class="scenario-description">
+                    Make a prepayment and reduce your monthly EMI while keeping the loan tenure unchanged.
+                </p>
+
+                <p-table [value]="reduceEMIScenarios" styleClass="p-datatable-striped"
+                    [tableStyle]="{'min-width': '50rem'}">
+                    <ng-template pTemplate="caption">
+                        <div class="table-header">
+                            <h3>Reduce EMI Scenarios</h3>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Prepayment Amount</th>
+                            <th>New EMI</th>
+                            <th>Tenure (Years)</th>
+                            <th>Total Interest</th>
+                            <th>Total Amount</th>
+                            <th>Total Savings</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-scenario>
+                        <tr>
+                            <td>₹{{ scenario.prepaymentAmount | number:'1.0-0' }}</td>
+                            <td>₹{{ scenario.newEMI | number:'1.2-2' }}</td>
+                            <td>{{ scenario.newTenure | number:'1.1-1' }}</td>
+                            <td>₹{{ scenario.totalInterest | number:'1.2-2' }}</td>
+                            <td>₹{{ scenario.totalAmount | number:'1.2-2' }}</td>
+                            <td class="savings">₹{{ scenario.savings | number:'1.2-2' }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-card>
+        </p-tabPanel>
+
+        <!-- Reduce EMI Amortization Schedule Tab -->
+        <p-tabPanel header="Reduce EMI (Amortization Schedule)">
+            <p-card>
+                <p class="scenario-description">
+                    Month-by-month breakdown showing how prepayment at month 12 reduces your monthly EMI while keeping
+                    tenure unchanged.
+                </p>
+
+                <p-table [value]="reduceEMIAmortizationSchedule" styleClass="p-datatable-striped"
+                    [tableStyle]="{'min-width': '70rem'}" [paginator]="true" [rows]="12"
+                    [rowsPerPageOptions]="[12, 24, 36]" [showCurrentPageReport]="true"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} months">
+                    <ng-template pTemplate="caption">
+                        <div class="table-header">
+                            <h3>Reduce EMI Amortization Schedule</h3>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Start of Month</th>
+                            <th>Outstanding</th>
+                            <th>Interest Paid</th>
+                            <th>Principal Paid</th>
+                            <th>Outstanding Remaining</th>
+                            <th class="prepayment-col">Prepayment</th>
+                            <th>New Outstanding Remaining</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-row>
+                        <tr [class.prepayment-row]="row.prepayment > 0">
+                            <td>{{ row.month }}</td>
+                            <td>₹{{ row.startingBalance | number:'1.2-2' }}</td>
+                            <td>₹{{ row.interestPaid | number:'1.2-2' }}</td>
+                            <td>₹{{ row.principalPaid | number:'1.2-2' }}</td>
+                            <td>₹{{ row.outstandingRemaining | number:'1.2-2' }}</td>
+                            <td class="prepayment-col" [class.highlight-prepayment]="row.prepayment > 0">
+                                @if (row.prepayment > 0) {
+                                <span>₹{{ row.prepayment | number:'1.0-0' }}</span>
+                                } @else {
+                                <span>-</span>
+                                }
+                            </td>
+                            <td>₹{{ row.newOutstandingRemaining | number:'1.2-2' }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-card>
+        </p-tabPanel>
+
+        <!-- Reduce Tenure Amortization Schedule Tab -->
+        <p-tabPanel header="Reduce Tenure (Amortization Schedule)">
+            <p-card>
+                <p class="scenario-description">
+                    Month-by-month breakdown showing how prepayment at month 12 reduces your loan tenure.
+                </p>
+
+                <p-table [value]="amortizationSchedule" styleClass="p-datatable-striped"
+                    [tableStyle]="{'min-width': '70rem'}" [paginator]="true" [rows]="12"
+                    [rowsPerPageOptions]="[12, 24, 36]" [showCurrentPageReport]="true"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} months">
+                    <ng-template pTemplate="caption">
+                        <div class="table-header">
+                            <h3>Amortization Schedule with Prepayment</h3>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Start of Month</th>
+                            <th>Outstanding</th>
+                            <th>Interest Paid</th>
+                            <th>Principal Paid</th>
+                            <th>Outstanding Remaining</th>
+                            <th class="prepayment-col">Prepayment</th>
+                            <th>New Outstanding Remaining</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-row>
+                        <tr [class.prepayment-row]="row.prepayment > 0">
+                            <td>{{ row.month }}</td>
+                            <td>₹{{ row.startingBalance | number:'1.2-2' }}</td>
+                            <td>₹{{ row.interestPaid | number:'1.2-2' }}</td>
+                            <td>₹{{ row.principalPaid | number:'1.2-2' }}</td>
+                            <td>₹{{ row.outstandingRemaining | number:'1.2-2' }}</td>
+                            <td class="prepayment-col" [class.highlight-prepayment]="row.prepayment > 0">
+                                @if (row.prepayment > 0) {
+                                <span>₹{{ row.prepayment | number:'1.0-0' }}</span>
+                                } @else {
+                                <span>-</span>
+                                }
+                            </td>
+                            <td>₹{{ row.newOutstandingRemaining | number:'1.2-2' }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-card>
+        </p-tabPanel>
+
+        <!-- Chart Tab -->
+        <p-tabPanel header="Comparison Chart">
+            <div class="chart-container">
+                <div class="chart-wrapper">
+                    <p-chart type="bar" [data]="chartData" [options]="chartOptions"
+                        [style]="{'height': '400px'}"></p-chart>
+                </div>
+            </div>
+        </p-tabPanel>
+    </p-tabView>
+</div>
