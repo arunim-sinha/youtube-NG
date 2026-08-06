@@ -1,0 +1,6 @@
+.engagement { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; }
+.engagement__reactions { display: flex; gap: 4px; background: #f2f2f2; border-radius: 18px; overflow: hidden; }
+.engagement__btn {
+  background: none; border: none; padding: 8px 16px; font-weight: 600; cursor: pointer; font-size: 14px;
+}
+.engagement__btn--active { color: #065fd4; }

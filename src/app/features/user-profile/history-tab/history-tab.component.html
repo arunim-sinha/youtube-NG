@@ -1,0 +1,23 @@
+<div class="history">
+  <div class="history__header">
+    <h3>Watch History</h3>
+    <button type="button" *ngIf="entries.length" (click)="clearAll()">Clear all</button>
+  </div>
+
+  <div *ngIf="loading">Loading history…</div>
+  <p *ngIf="!loading && !entries.length" class="history__empty">No watch history yet.</p>
+
+  <ul class="history__list">
+    <li class="history-item" *ngFor="let entry of entries">
+      <a [routerLink]="['/watch', entry.video._id]" class="history-item__link">
+        <img class="history-item__thumb" [src]="entry.video.thumbnailUrl" [alt]="entry.video.title" />
+        <div>
+          <div class="history-item__title">{{ entry.video.title }}</div>
+          <div class="history-item__channel">{{ entry.video.channel.username }}</div>
+          <div class="history-item__date">Watched {{ entry.lastWatchedAt | date: 'medium' }}</div>
+        </div>
+      </a>
+      <button type="button" class="history-item__remove" (click)="remove(entry)">Remove</button>
+    </li>
+  </ul>
+</div>

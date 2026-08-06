@@ -1,0 +1,10 @@
+<div class="recs">
+  <h3 class="recs__heading">Recommended</h3>
+  <div *ngIf="loading" class="recs__loading">Loading…</div>
+  <div class="recs__grid" *ngIf="!loading">
+    <a class="recs-item" *ngFor="let video of videos" [routerLink]="['/watch', video._id]">
+      <img class="recs-item__thumb" [src]="video.thumbnailUrl" [alt]="video.title" />
+      <div class="recs-item__title">{{ video.title }}</div>
+    </a>
+  </div>
+</div>

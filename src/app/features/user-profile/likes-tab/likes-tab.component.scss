@@ -1,0 +1,6 @@
+.likes__empty { color: #606060; }
+.likes__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+.likes-item { text-decoration: none; color: inherit; }
+.likes-item__thumb { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; }
+.likes-item__title { font-weight: 600; font-size: 13px; margin-top: 6px; }
+.likes-item__channel { font-size: 12px; color: #606060; }

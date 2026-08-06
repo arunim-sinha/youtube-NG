@@ -1,0 +1,18 @@
+.comments { padding: 16px 0; }
+.comments__heading { font-size: 16px; margin-bottom: 12px; }
+.comments__composer { display: flex; gap: 12px; margin-bottom: 24px; }
+.comments__composer textarea { flex: 1; resize: vertical; border: none; border-bottom: 1px solid #ccc; padding: 4px; }
+.comments__composer button { align-self: flex-end; }
+.comments__list { list-style: none; margin: 0; padding: 0; }
+.comment { display: flex; gap: 12px; margin-bottom: 20px; }
+.comment__avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+.comment__meta { font-size: 13px; }
+.comment__author { font-weight: 600; margin-right: 8px; }
+.comment__date { color: #606060; }
+.comment__text { margin: 4px 0; font-size: 14px; }
+.comment__actions button {
+  background: none; border: none; color: #606060; font-size: 12px; font-weight: 600;
+  margin-right: 12px; cursor: pointer;
+}
+.comment__reply-box { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; max-width: 400px; }
+.comment__replies { list-style: none; margin: 12px 0 0; padding-left: 20px; border-left: 2px solid #eee; }

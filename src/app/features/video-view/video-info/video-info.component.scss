@@ -1,0 +1,21 @@
+.video-info { padding: 12px 0; border-bottom: 1px solid #e5e5e5; }
+.video-info__title { font-size: 20px; font-weight: 600; margin: 0 0 8px; }
+.video-info__meta { color: #606060; font-size: 14px; }
+.video-info__meta .dot { margin: 0 6px; }
+.video-info__description {
+  margin-top: 12px;
+  background: #f2f2f2;
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 14px;
+  white-space: pre-wrap;
+  max-height: 48px;
+  overflow: hidden;
+}
+.video-info__description--expanded { max-height: none; }
+.video-info__tags { margin-top: 8px; }
+.tag { color: #065fd4; margin-right: 8px; }
+.video-info__toggle {
+  background: none; border: none; color: #606060; font-weight: 600;
+  cursor: pointer; padding: 4px 0;
+}

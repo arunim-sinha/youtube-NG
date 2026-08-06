@@ -1,0 +1,55 @@
+<section class="comments">
+  <h3 class="comments__heading">{{ commentCount | number }} Comments</h3>
+
+  <div class="comments__composer">
+    <textarea
+      [(ngModel)]="newCommentText"
+      placeholder="Add a comment…"
+      rows="2"
+    ></textarea>
+    <button type="button" [disabled]="!newCommentText.trim()" (click)="postComment()">Comment</button>
+  </div>
+
+  <div *ngIf="loading" class="comments__loading">Loading comments…</div>
+
+  <ul class="comments__list" *ngIf="!loading">
+    <li class="comment" *ngFor="let comment of comments">
+      <img class="comment__avatar" [src]="comment.author.avatarUrl || '/assets/default-avatar.png'" alt="" />
+      <div class="comment__body">
+        <div class="comment__meta">
+          <span class="comment__author">{{ comment.author.username }}</span>
+          <span class="comment__date">{{ comment.createdAt | date: 'shortDate' }}</span>
+        </div>
+        <p class="comment__text">{{ comment.text }}</p>
+        <div class="comment__actions">
+          <button type="button" (click)="startReply(comment._id)">Reply</button>
+          <button type="button" (click)="deleteComment(comment)">Delete</button>
+        </div>
+
+        <div class="comment__reply-box" *ngIf="replyingTo === comment._id">
+          <textarea [(ngModel)]="replyText" rows="2" placeholder="Reply…"></textarea>
+          <div>
+            <button type="button" [disabled]="!replyText.trim()" (click)="postReply(comment)">Reply</button>
+            <button type="button" (click)="cancelReply()">Cancel</button>
+          </div>
+        </div>
+
+        <ul class="comment__replies" *ngIf="comment.replies?.length">
+          <li class="comment comment--reply" *ngFor="let reply of comment.replies">
+            <img class="comment__avatar" [src]="reply.author.avatarUrl || '/assets/default-avatar.png'" alt="" />
+            <div class="comment__body">
+              <div class="comment__meta">
+                <span class="comment__author">{{ reply.author.username }}</span>
+                <span class="comment__date">{{ reply.createdAt | date: 'shortDate' }}</span>
+              </div>
+              <p class="comment__text">{{ reply.text }}</p>
+              <div class="comment__actions">
+                <button type="button" (click)="deleteComment(reply, comment)">Delete</button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</section>

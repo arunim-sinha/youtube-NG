@@ -1,0 +1,45 @@
+<section class="upload">
+  <h2>Upload a video</h2>
+  <form class="upload__form" (ngSubmit)="submit()">
+    <label>
+      Title
+      <input type="text" name="title" [(ngModel)]="title" required maxlength="100" />
+    </label>
+    <label>
+      Description
+      <textarea name="description" rows="3" [(ngModel)]="description"></textarea>
+    </label>
+    <div class="upload__row">
+      <label>
+        Category
+        <input type="text" name="category" [(ngModel)]="category" />
+      </label>
+      <label>
+        Tags (comma separated)
+        <input type="text" name="tags" [(ngModel)]="tags" placeholder="cooking, vlog, tutorial" />
+      </label>
+      <label>
+        Visibility
+        <select name="visibility" [(ngModel)]="visibility">
+          <option value="public">Public</option>
+          <option value="unlisted">Unlisted</option>
+          <option value="private">Private</option>
+        </select>
+      </label>
+    </div>
+    <div class="upload__row">
+      <label>
+        Video file
+        <input type="file" accept="video/*" (change)="onVideoSelected($event)" required />
+      </label>
+      <label>
+        Thumbnail (optional)
+        <input type="file" accept="image/*" (change)="onThumbnailSelected($event)" />
+      </label>
+    </div>
+
+    <p class="upload__error" *ngIf="error">{{ error }}</p>
+
+    <button type="submit" [disabled]="uploading">{{ uploading ? 'Uploading…' : 'Upload' }}</button>
+  </form>
+</section>

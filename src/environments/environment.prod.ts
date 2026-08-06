@@ -1,5 +1,5 @@
 export const environment = {
-    production: false,
-    apiUrl:  'http://localhost:3001/api/v1/users',
-    appName: 'My Angular App'
-  };
+  production: true,
+  apiUrl: 'http://localhost:3000/api/v1',
+  appName: 'YouTube Clone App',
+};

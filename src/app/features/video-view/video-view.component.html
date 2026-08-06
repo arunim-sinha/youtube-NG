@@ -1,0 +1,21 @@
+<div class="video-view" *ngIf="!loading; else loadingTpl">
+  <ng-container *ngIf="video; else errorTpl">
+    <div class="video-view__main">
+      <app-video-player [video]="video" (playbackStarted)="onPlaybackStarted()"></app-video-player>
+      <app-video-info [video]="video"></app-video-info>
+      <app-engagement-bar [video]="video" (reactionChanged)="onReactionChanged($event)"></app-engagement-bar>
+      <app-creator-info [channel]="video.channel"></app-creator-info>
+      <app-comment-section [videoId]="video._id" [commentCount]="video.commentCount"></app-comment-section>
+    </div>
+    <aside class="video-view__sidebar">
+      <app-related-videos [videoId]="video._id"></app-related-videos>
+    </aside>
+  </ng-container>
+  <ng-template #errorTpl>
+    <p class="video-view__error">{{ error }}</p>
+  </ng-template>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="video-view__loading">Loading video…</div>
+</ng-template>

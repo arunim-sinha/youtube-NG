@@ -1,0 +1,22 @@
+<div class="playlist" *ngIf="playlist">
+  <div class="playlist__header">
+    <div class="playlist__title">{{ playlist.title }}</div>
+    <div class="playlist__count">{{ playlist.videos.length }} videos</div>
+  </div>
+  <ol class="playlist__list">
+    <li
+      class="playlist-item"
+      *ngFor="let video of playlist.videos; let i = index"
+      [class.playlist-item--active]="video._id === activeVideoId"
+    >
+      <a [routerLink]="['/watch', video._id]" class="playlist-item__link">
+        <span class="playlist-item__index">{{ i + 1 }}</span>
+        <img class="playlist-item__thumb" [src]="video.thumbnailUrl" [alt]="video.title" />
+        <div class="playlist-item__meta">
+          <div class="playlist-item__title">{{ video.title }}</div>
+          <div class="playlist-item__channel">{{ video.channel.username }}</div>
+        </div>
+      </a>
+    </li>
+  </ol>
+</div>

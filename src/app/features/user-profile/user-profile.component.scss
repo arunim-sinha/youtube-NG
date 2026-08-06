@@ -1,0 +1,7 @@
+.profile { padding: 16px 24px; }
+.profile__tabs { display: flex; gap: 8px; border-bottom: 1px solid #e5e5e5; margin-bottom: 16px; }
+.profile__tab {
+  background: none; border: none; padding: 12px 16px; font-weight: 600; cursor: pointer;
+  border-bottom: 2px solid transparent; color: #606060;
+}
+.profile__tab--active { color: #0f0f0f; border-bottom-color: #065fd4; }

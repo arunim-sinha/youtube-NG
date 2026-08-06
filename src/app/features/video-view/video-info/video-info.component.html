@@ -1,0 +1,18 @@
+<div class="video-info">
+  <h1 class="video-info__title">{{ video.title }}</h1>
+  <div class="video-info__meta">
+    <span>{{ video.views | number }} views</span>
+    <span class="dot">•</span>
+    <span>{{ video.createdAt | date: 'mediumDate' }}</span>
+  </div>
+
+  <div class="video-info__description" [class.video-info__description--expanded]="expanded">
+    {{ video.description || 'No description provided.' }}
+    <div class="video-info__tags" *ngIf="video.tags?.length">
+      <span class="tag" *ngFor="let tag of video.tags">#{{ tag }}</span>
+    </div>
+  </div>
+  <button class="video-info__toggle" type="button" (click)="toggleExpanded()">
+    {{ expanded ? 'Show less' : 'Show more' }}
+  </button>
+</div>

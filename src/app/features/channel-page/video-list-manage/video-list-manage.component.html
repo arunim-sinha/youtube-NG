@@ -1,0 +1,38 @@
+<section class="manage">
+  <h2>Your uploads</h2>
+  <p class="manage__empty" *ngIf="!videos.length">You haven't uploaded any videos yet.</p>
+
+  <ul class="manage__list">
+    <li class="manage-item" *ngFor="let video of videos">
+      <a [routerLink]="['/watch', video._id]" class="manage-item__link">
+        <img class="manage-item__thumb" [src]="video.thumbnailUrl" [alt]="video.title" />
+      </a>
+      <div class="manage-item__meta">
+        <div class="manage-item__title">{{ video.title }}</div>
+        <div class="manage-item__stats">
+          {{ video.views | number }} views · {{ video.commentCount }} comments ·
+          <span class="manage-item__visibility manage-item__visibility--{{ video.visibility }}">
+            {{ video.visibility }}
+          </span>
+        </div>
+      </div>
+      <div class="manage-item__actions">
+        <button
+          type="button"
+          [disabled]="busyId === video._id"
+          (click)="toggleVisibility(video)"
+        >
+          {{ video.visibility === 'public' ? 'Hide' : video.visibility === 'unlisted' ? 'Make private' : 'Make public' }}
+        </button>
+        <button
+          type="button"
+          class="manage-item__delete"
+          [disabled]="busyId === video._id"
+          (click)="deleteVideo(video)"
+        >
+          Delete
+        </button>
+      </div>
+    </li>
+  </ul>
+</section>

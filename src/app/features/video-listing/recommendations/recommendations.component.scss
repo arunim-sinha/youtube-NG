@@ -1,0 +1,5 @@
+.recs__heading { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+.recs__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+.recs-item { text-decoration: none; color: inherit; }
+.recs-item__thumb { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; }
+.recs-item__title { font-size: 12px; font-weight: 600; margin-top: 4px; }

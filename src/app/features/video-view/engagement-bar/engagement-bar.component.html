@@ -1,0 +1,21 @@
+<div class="engagement">
+  <div class="engagement__reactions">
+    <button
+      type="button"
+      class="engagement__btn"
+      [class.engagement__btn--active]="video.myReaction === 'like'"
+      (click)="react('like')"
+    >
+      👍 {{ video.likeCount | number }}
+    </button>
+    <button
+      type="button"
+      class="engagement__btn"
+      [class.engagement__btn--active]="video.myReaction === 'dislike'"
+      (click)="react('dislike')"
+    >
+      👎 {{ video.dislikeCount | number }}
+    </button>
+  </div>
+  <button type="button" class="engagement__btn" (click)="share()">↗ Share</button>
+</div>

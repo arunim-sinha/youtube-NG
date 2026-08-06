@@ -1,0 +1,12 @@
+<div class="player">
+  <video
+    #player
+    class="player__el"
+    [poster]="video.thumbnailUrl"
+    controls
+    (play)="onPlay()"
+  >
+    <source [src]="video.videoUrl" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+</div>

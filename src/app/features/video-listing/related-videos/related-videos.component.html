@@ -1,0 +1,11 @@
+<div class="related">
+  <div *ngIf="loading" class="related__loading">Loading…</div>
+  <a class="related-item" *ngFor="let video of videos" [routerLink]="['/watch', video._id]">
+    <img class="related-item__thumb" [src]="video.thumbnailUrl" [alt]="video.title" />
+    <div class="related-item__meta">
+      <div class="related-item__title">{{ video.title }}</div>
+      <div class="related-item__channel">{{ video.channel.username }}</div>
+      <div class="related-item__stats">{{ video.views | number }} views</div>
+    </div>
+  </a>
+</div>

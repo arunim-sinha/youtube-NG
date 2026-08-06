@@ -1,0 +1,13 @@
+<div class="likes">
+  <h3>Liked Videos</h3>
+  <div *ngIf="loading">Loading liked videos…</div>
+  <p *ngIf="!loading && !videos.length" class="likes__empty">You haven't liked any videos yet.</p>
+
+  <div class="likes__grid" *ngIf="!loading">
+    <a class="likes-item" *ngFor="let video of videos" [routerLink]="['/watch', video._id]">
+      <img class="likes-item__thumb" [src]="video.thumbnailUrl" [alt]="video.title" />
+      <div class="likes-item__title">{{ video.title }}</div>
+      <div class="likes-item__channel">{{ video.channel.username }}</div>
+    </a>
+  </div>
+</div>

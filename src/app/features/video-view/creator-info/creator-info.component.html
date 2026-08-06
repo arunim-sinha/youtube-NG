@@ -1,0 +1,23 @@
+<div class="creator-info">
+  <a class="creator-info__identity" [routerLink]="['/channel', channel._id]">
+    <img
+      class="creator-info__avatar"
+      [src]="channel.avatarUrl || '/assets/default-avatar.png'"
+      [alt]="channel.username"
+    />
+    <div>
+      <div class="creator-info__name">{{ channel.username }}</div>
+      <div class="creator-info__subs" *ngIf="channel.subscriberCount !== undefined">
+        {{ channel.subscriberCount | number }} subscribers
+      </div>
+    </div>
+  </a>
+  <button
+    class="creator-info__subscribe"
+    [class.creator-info__subscribe--active]="subscribed"
+    type="button"
+    (click)="toggleSubscribe()"
+  >
+    {{ subscribed ? 'Subscribed' : 'Subscribe' }}
+  </button>
+</div>

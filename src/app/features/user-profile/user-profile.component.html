@@ -1,0 +1,34 @@
+<div class="profile">
+  <nav class="profile__tabs">
+    <button
+      type="button"
+      class="profile__tab"
+      [class.profile__tab--active]="activeTab === 'general'"
+      (click)="setTab('general')"
+    >
+      General Information
+    </button>
+    <button
+      type="button"
+      class="profile__tab"
+      [class.profile__tab--active]="activeTab === 'history'"
+      (click)="setTab('history')"
+    >
+      History
+    </button>
+    <button
+      type="button"
+      class="profile__tab"
+      [class.profile__tab--active]="activeTab === 'likes'"
+      (click)="setTab('likes')"
+    >
+      Likes
+    </button>
+  </nav>
+
+  <div class="profile__content">
+    <app-general-info-tab *ngIf="activeTab === 'general'"></app-general-info-tab>
+    <app-history-tab *ngIf="activeTab === 'history'"></app-history-tab>
+    <app-likes-tab *ngIf="activeTab === 'likes'"></app-likes-tab>
+  </div>
+</div>

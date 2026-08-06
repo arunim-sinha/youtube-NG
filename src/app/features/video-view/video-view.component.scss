@@ -1,0 +1,17 @@
+.video-view {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 24px;
+  padding: 16px 24px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
+}
+.video-view__main { min-width: 0; }
+.video-view__loading,
+.video-view__error {
+  padding: 48px;
+  text-align: center;
+  color: #606060;
+}

@@ -1,0 +1,8 @@
+<div class="channel-page">
+  <h1>Your Channel</h1>
+  <app-upload-section (uploaded)="onUploaded($event)"></app-upload-section>
+
+  <div *ngIf="loading">Loading your videos…</div>
+  <app-video-list-manage *ngIf="!loading" [videos]="videos" (videosChanged)="onVideosChanged($event)">
+  </app-video-list-manage>
+</div>

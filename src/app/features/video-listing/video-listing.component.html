@@ -1,0 +1,25 @@
+<div class="listing">
+  <div *ngIf="loading" class="listing__loading">Loading videos…</div>
+
+  <div class="listing__grid" *ngIf="!loading">
+    <a
+      class="listing-card"
+      *ngFor="let video of videos"
+      [routerLink]="['/watch', video._id]"
+    >
+      <img class="listing-card__thumb" [src]="video.thumbnailUrl" [alt]="video.title" />
+      <div class="listing-card__meta">
+        <img
+          class="listing-card__avatar"
+          [src]="video.channel.avatarUrl || '/assets/default-avatar.png'"
+          alt=""
+        />
+        <div>
+          <div class="listing-card__title">{{ video.title }}</div>
+          <div class="listing-card__channel">{{ video.channel.username }}</div>
+          <div class="listing-card__stats">{{ video.views | number }} views</div>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
