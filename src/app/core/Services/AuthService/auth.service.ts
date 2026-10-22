@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'environments/environment';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AuthResponse } from '@app/core/Models/auth.models';
 import { LocalStorageUtil } from '@app/core/Utils/LocalStorage.util';
@@ -37,37 +37,7 @@ export class AuthService {
     if (!data?.userName || !data?.password) {
       return throwError(() => new Error('Login data is missing or incomplete'));
     }
-    return this.http.post(`${this.apiUrl}/login`, data).pipe(
-      map((res: any) => {
-        localStorage.setItem('token', res.token);
-        return res;
-      }),
-      catchError((error) => {
-        if (error?.status >= 500) {
-          console.error('Login error:', error);
-          // Handle server errors
-          return throwError(
-            () =>
-              new Error(error?.error?.message || 'Server error, login failed')
-          );
-        } else if (error?.status >= 400 && error?.status < 500) {
-          console.log('Client error:', error);
-          // Handle client errors: return default AuthResponse
-          const defaultAuthResponse: AuthResponse = {
-            token: '', // No token on error
-            success: false, // indicate login failure
-            message: error?.error?.message || 'Invalid credentials or request', // optional
-            // Add more fields as per your AuthResponse interface
-          };
-          return of(defaultAuthResponse);
-        } else {
-          // Handle network errors or unexpected errors
-          return throwError(
-            () => new Error('An unexpected error occurred. Please try again.')
-          );
-        }
-      })
-    );
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data);
   }
 
   logout(): Observable<any> {
@@ -99,34 +69,6 @@ export class AuthService {
         () => new Error('Registration data is missing or incomplete')
       );
     }
-    return this.http.post(`${this.apiUrl}/register`, data).pipe(
-      map((res: any) => {
-        return res;
-      }),
-      catchError((error) => {
-        if (error?.status >= 500) {
-          // Handle server errors
-          return throwError(
-            () =>
-              new Error(
-                error?.error?.message || 'Server error, registration failed'
-              )
-          );
-        } else if (error?.status >= 400 && error?.status < 500) {
-          console.error(error);
-          // Handle client errors: return default AuthResponse
-          const defaultAuthResponse: AuthResponse = {
-            token: '', // No token on error
-            success: false, // indicate registration failure
-            message: error?.error?.message || 'Invalid registration data', // optional
-          };
-          return of(defaultAuthResponse);
-        } else {
-          return throwError(
-            () => new Error(error?.error?.message || 'Registration failed')
-          );
-        }
-      })
-    );
+    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, data);
   }
 }

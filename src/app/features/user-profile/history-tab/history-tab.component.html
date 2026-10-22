@@ -1,11 +1,20 @@
 <div class="history">
   <div class="history__header">
     <h3>Watch History</h3>
-    <button type="button" *ngIf="entries.length" (click)="clearAll()">Clear all</button>
+    <div *ngIf="entries.length">
+      <button type="button" *ngIf="!confirmClear" (click)="clearAll()">Clear history</button>
+      <span *ngIf="confirmClear" class="history__confirm">
+        Clear all history?
+        <button type="button" [disabled]="clearing" (click)="clearAll()">{{ clearing ? 'Clearing…' : 'Confirm' }}</button>
+        <button type="button" [disabled]="clearing" (click)="cancelClear()">Cancel</button>
+      </span>
+    </div>
   </div>
 
-  <div *ngIf="loading">Loading history…</div>
-  <p *ngIf="!loading && !entries.length" class="history__empty">No watch history yet.</p>
+  <p *ngIf="error" class="history__error" role="alert">{{ error }}</p>
+  <div *ngIf="loading" role="status">Loading history…</div>
+  <button *ngIf="!loading && error === 'Watch history could not be loaded.'" type="button" (click)="load()">Try again</button>
+  <p *ngIf="!loading && !error && !entries.length" class="history__empty">No watch history yet. Play a video and it will appear here.</p>
 
   <ul class="history__list">
     <li class="history-item" *ngFor="let entry of entries">
@@ -17,7 +26,9 @@
           <div class="history-item__date">Watched {{ entry.lastWatchedAt | date: 'medium' }}</div>
         </div>
       </a>
-      <button type="button" class="history-item__remove" (click)="remove(entry)">Remove</button>
+      <button type="button" class="history-item__remove" [disabled]="removing.has(entry._id)" (click)="remove(entry)">
+        {{ removing.has(entry._id) ? 'Removing…' : 'Remove' }}
+      </button>
     </li>
   </ul>
 </div>

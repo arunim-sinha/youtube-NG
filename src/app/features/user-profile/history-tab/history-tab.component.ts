@@ -15,6 +15,10 @@ import { UserService } from '../../../core/services/user.service';
 export class HistoryTabComponent implements OnInit {
   entries: WatchHistoryEntry[] = [];
   loading = true;
+  error = '';
+  clearing = false;
+  confirmClear = false;
+  removing = new Set<string>();
 
   constructor(private userService: UserService) {}
 
@@ -24,22 +28,55 @@ export class HistoryTabComponent implements OnInit {
 
   load(): void {
     this.loading = true;
+    this.error = '';
     this.userService.getHistory().subscribe({
       next: (entries) => {
         this.entries = entries;
         this.loading = false;
       },
-      error: () => (this.loading = false),
+      error: () => {
+        this.loading = false;
+        this.error = 'Watch history could not be loaded.';
+      },
     });
   }
 
   remove(entry: WatchHistoryEntry): void {
-    this.userService.removeHistoryEntry(entry.video._id).subscribe(() => {
-      this.entries = this.entries.filter((e) => e._id !== entry._id);
+    this.error = '';
+    this.removing.add(entry._id);
+    this.userService.removeHistoryEntry(entry.video._id).subscribe({
+      next: () => {
+        this.entries = this.entries.filter((e) => e._id !== entry._id);
+        this.removing.delete(entry._id);
+      },
+      error: () => {
+        this.error = 'This item could not be removed from your history.';
+        this.removing.delete(entry._id);
+      },
     });
   }
 
   clearAll(): void {
-    this.userService.clearHistory().subscribe(() => (this.entries = []));
+    if (!this.confirmClear) {
+      this.confirmClear = true;
+      return;
+    }
+    this.clearing = true;
+    this.error = '';
+    this.userService.clearHistory().subscribe({
+      next: () => {
+        this.entries = [];
+        this.clearing = false;
+        this.confirmClear = false;
+      },
+      error: () => {
+        this.error = 'Your history could not be cleared.';
+        this.clearing = false;
+      },
+    });
+  }
+
+  cancelClear(): void {
+    this.confirmClear = false;
   }
 }

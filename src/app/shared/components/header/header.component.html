@@ -1,46 +1,53 @@
-<p-menubar id="header" class="p-menubar">
-  <ng-template pTemplate="start">
-    <div class="header-left">
-      @for (sitem of startMenuItems; track sitem.label) {
-      <a pRipple class="p-menubar-item-content p-menubar-item-link" [routerLink]="sitem.routerLink"
-        [routerLinkActive]="['p-menuitem-link-active']"><span>{{ sitem.label }}</span>
+<header class="site-header">
+  <p *ngIf="errorMessage" class="site-header__error" role="alert">{{ errorMessage }}</p>
+  <a class="site-header__brand" routerLink="/" aria-label="YouTube NG home">
+    <span class="site-header__brand-mark" aria-hidden="true"><i class="pi pi-play"></i></span>
+    <span>play<span class="site-header__brand-accent">frame</span></span>
+  </a>
+
+  <form class="site-header__search" role="search" (ngSubmit)="searchVideos()">
+    <label class="visually-hidden" for="video-search">Search videos</label>
+    <input
+      id="video-search"
+      type="search"
+      name="search"
+      [(ngModel)]="searchTerm"
+      placeholder="Search videos, creators..."
+      autocomplete="off"
+    />
+    <button type="submit" aria-label="Search videos"><i class="pi pi-search" aria-hidden="true"></i></button>
+  </form>
+
+  <nav class="site-header__actions" aria-label="Main navigation">
+    <a class="site-header__home" routerLink="/" routerLinkActive="site-header__link--active" [routerLinkActiveOptions]="{ exact: true }">
+      <i class="pi pi-compass" aria-hidden="true"></i><span>Explore</span>
+    </a>
+    <ng-container *ngIf="isLoggedIn; else guestActions">
+      <a class="site-header__account" routerLink="/me/profile" aria-label="Your account">
+        <i class="pi pi-user" aria-hidden="true"></i><span>My account</span>
       </a>
-      }
-    </div>
-  </ng-template>
-  <ng-template pTemplate="end">
-    <div class="header-right" style="display: flex; align-items: center; gap: 10px;">
-      <div class="theme-switcher">
-        <p-select [options]="themes" [(ngModel)]="selectedTheme" optionLabel="label"
-          (onChange)="changeTheme($event.value)" placeholder="Select a Theme" class="w-full md:w-56" />
-      </div>
-      <p-button [icon]="isDarkMode ? 'pi pi-moon' : 'pi pi-sun'" [rounded]="true" [text]="true"
-        (onClick)="toggleDarkMode()"></p-button>
-      @for (eitem of endMenuItems; track eitem.label) {
-      <ng-container>
-        @if (eitem.routerLink != null && eitem.visible) {
-        <a pRipple class="p-menubar-item-content p-menubar-item-link" [routerLink]="eitem.routerLink"
-          [routerLinkActive]="['p-menuitem-link-active']">
-          <span>{{ eitem.label }}</span>
-        </a>
-        }
-        @if (eitem.routerLink == null && eitem.command!= null && eitem.visible) {
-        <a pRipple class="p-menubar-item-content p-menubar-item-link" (click)="eitem.command({originalEvent: $event})"
-          [routerLinkActive]="['p-menuitem-link-active']">
-          <span>{{ eitem.label }}</span>
-        </a>
-        }
-      </ng-container>
-      }
-    </div>
-  </ng-template>
-</p-menubar>
+      <button class="site-header__text-button" type="button" (click)="logout()">Sign out</button>
+    </ng-container>
+    <ng-template #guestActions>
+      <button class="site-header__text-button" type="button" (click)="login()">Sign in</button>
+      <button class="site-header__join" type="button" (click)="register()">Create account</button>
+    </ng-template>
+    <button
+      class="site-header__theme"
+      type="button"
+      [attr.aria-label]="isDarkMode ? 'Switch to light theme' : 'Switch to dark theme'"
+      (click)="toggleDarkMode()"
+    ><i [class]="isDarkMode ? 'pi pi-sun' : 'pi pi-moon'" aria-hidden="true"></i></button>
+  </nav>
+</header>
 
 @defer (on idle) {
-<app-login [(displayLoginDialog)]="displayLoginDialog"
-  (displayLoginDialogChange)="resetLoginRegisterVisible($event)"></app-login>
-<app-registration [(displayRegisterDialog)]="displayRegisterDialog"
-  (displayRegisterDialogChange)="resetLoginRegisterVisible($event)"></app-registration>
-} @placeholder {
-<!-- Placeholder not strictly needed for on idle, but keeping empty is fine -->
+  <app-login
+    [(displayLoginDialog)]="displayLoginDialog"
+    (displayLoginDialogChange)="resetLoginRegisterVisible($event)"
+  ></app-login>
+  <app-registration
+    [(displayRegisterDialog)]="displayRegisterDialog"
+    (displayRegisterDialogChange)="resetLoginRegisterVisible($event)"
+  ></app-registration>
 }

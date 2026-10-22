@@ -1,13 +1,18 @@
-<div class="likes">
-  <h3>Liked Videos</h3>
-  <div *ngIf="loading">Loading liked videos…</div>
-  <p *ngIf="!loading && !videos.length" class="likes__empty">You haven't liked any videos yet.</p>
-
-  <div class="likes__grid" *ngIf="!loading">
+<section class="likes">
+  <h3>Liked videos</h3>
+  <p *ngIf="loading" role="status">Loading your liked videos…</p>
+  <div *ngIf="error" class="likes__error" role="alert">
+    <p>{{ error }}</p><button type="button" (click)="load()">Try again</button>
+  </div>
+  <p *ngIf="!loading && !error && !videos.length" class="likes__empty">Videos you like will be saved here for later.</p>
+  <div class="likes__grid" *ngIf="!loading && !error && videos.length">
     <a class="likes-item" *ngFor="let video of videos" [routerLink]="['/watch', video._id]">
-      <img class="likes-item__thumb" [src]="video.thumbnailUrl" [alt]="video.title" />
+      <div class="likes-item__image">
+        <img class="likes-item__thumb" [src]="video.thumbnailUrl" [alt]="video.title" loading="lazy" />
+      </div>
       <div class="likes-item__title">{{ video.title }}</div>
       <div class="likes-item__channel">{{ video.channel.username }}</div>
+      <div class="likes-item__stats">{{ video.views | number }} views <span aria-hidden="true">·</span> {{ video.createdAt | date:'mediumDate' }}</div>
     </a>
   </div>
-</div>
+</section>

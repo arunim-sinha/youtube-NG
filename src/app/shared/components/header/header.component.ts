@@ -1,90 +1,47 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { MenubarModule } from 'primeng/menubar';
-import { DialogModule } from 'primeng/dialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { MessageModule } from 'primeng/message';
 import { AuthService } from '@app/core/Services/AuthService/auth.service';
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './register/registration/registration.component';
-import { MenuItem } from 'primeng/api';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CookieManager } from '@app/core/Utils/CookieManager.util';
-import { PrimeNG } from 'primeng/config';
-import Aura from '@primeng/themes/aura';
-import Lara from '@primeng/themes/lara';
-import Nora from '@primeng/themes/nora';
-import Material from '@primeng/themes/material';
-import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-header',
   imports: [
     CommonModule,
-    ButtonModule,
-    MenubarModule,
-    DialogModule,
-    InputTextModule,
     FormsModule,
-    MessageModule,
     LoginComponent,
     RegistrationComponent,
     RouterModule,
-    SelectModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
 export class HeaderComponent implements OnInit {
-  [x: string]: any;
-  authService: AuthService; //injected service
-  isLoggedIn: boolean = false; // Set to false initially to simulate logged-out state
-  displayLoginDialog: boolean = false;
-  displayRegisterDialog: boolean = false;
-  username: string = '';
-  email: string = '';
-  password: string = '';
-  ErrorMessage: string = '';
-  errormsg: boolean = false;
+  isLoggedIn = false;
+  displayLoginDialog = false;
+  displayRegisterDialog = false;
+  errorMessage = '';
+  isDarkMode = false;
+  searchTerm = '';
 
-  themes = [
-    { label: 'Aura', value: Aura },
-    { label: 'Lara', value: Lara },
-    { label: 'Nora', value: Nora },
-    { label: 'Material', value: Material }
-  ];
+  constructor(
+    private authService: AuthService,
+    private cookie: CookieManager,
+    private router: Router
+  ) {}
 
-  selectedTheme: any = this.themes[1]; // Default to Lara
-  isDarkMode: boolean = false;
-
-  constructor(authService: AuthService, private cookie: CookieManager, private primeng: PrimeNG) {
-    this.authService = authService;
-  }
-  ngOnInit() {
-    try {
-      if (this.authService.isLoggedIn()) {
-        this.isLoggedIn = true;
-        this.updateEndMenuItemsVisibility(true);
-      } else {
-        this.isLoggedIn = false;
-        this.updateEndMenuItemsVisibility(false);
-      }
-    } catch (error) {
-      console.error('Error in ngOnInit:', error);
-      this.ErrorMessage = 'An error occurred while initializing the header.';
-      this.errormsg = true;
-    }
-  }
-
-  changeTheme(theme: any) {
-    this.primeng.theme.set({
-      preset: theme.value,
-      options: {
-        darkModeSelector: '.app-dark',
-      },
+  searchVideos(): void {
+    const query = this.searchTerm.trim();
+    void this.router.navigate(['/'], {
+      queryParams: query ? { q: query } : {},
     });
+  }
+
+  ngOnInit(): void {
+    this.isLoggedIn = this.authService.isLoggedIn();
   }
 
   toggleDarkMode() {
@@ -97,119 +54,36 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  menuItems: MenuItem[] = [
-    { label: 'Home', routerLink: '/', styleClass: 'p-menubar-start' },
-    {
-      label: 'Services',
-      routerLink: '/services',
-      styleClass: 'p-menubar-start',
-    },
-    { label: 'Contact', routerLink: '/contact', styleClass: 'p-menubar-start' },
-    { label: 'About', routerLink: '/about', styleClass: 'p-menubar-start' },
-
-    {
-      label: 'Profile',
-      routerLink: '/profile',
-      visible: this.isLoggedIn,
-      styleClass: '.p-menubar-end',
-    },
-    {
-      label: 'Logout',
-      command: () => this.logout(),
-      visible: this.isLoggedIn,
-      styleClass: '.p-menubar-end',
-    },
-    {
-      label: 'Register',
-      command: () => this.register(),
-      visible: !this.isLoggedIn,
-      styleClass: '.p-menubar-end',
-    },
-    {
-      label: 'Login',
-      command: () => this.login(),
-      visible: !this.isLoggedIn,
-      styleClass: '.p-menubar-end',
-    },
-  ];
-  register() {
+  register(): void {
     this.displayRegisterDialog = true;
-    this.username = '';
-    this.email = '';
-    this.password = '';
   }
 
-  get startMenuItems() {
-    return this.menuItems.filter(
-      (item) => item.styleClass === 'p-menubar-start'
-    );
-  }
-  get endMenuItems() {
-    return this.menuItems.filter(
-      (item) => item.styleClass === '.p-menubar-end'
-    );
-  }
-  resetLoginRegisterVisible($event: boolean) {
+  resetLoginRegisterVisible($event: boolean): void {
     this.isLoggedIn = $event;
-    this.updateEndMenuItemsVisibility($event);
     this.displayLoginDialog = false;
     this.displayRegisterDialog = false;
-    this.username = '';
-    this.email = '';
-    this.password = '';
-    this.ErrorMessage = '';
-    this.errormsg = false;
+    this.errorMessage = '';
   }
-  // Function to handle login action (simulating successful login)
-  login() {
+
+  login(): void {
     this.displayLoginDialog = true;
-    this.username = '';
-    this.password = '';
   }
 
-  // Function to handle logout (optional)
-  logout() {
-    try {
-      this.authService.logout().subscribe({
-        next: (res) => {
-          this.isLoggedIn = false;
-          this.updateEndMenuItemsVisibility(false);
-          this.displayLoginDialog = false;
-          this.displayRegisterDialog = false;
-          this.username = '';
-          this.email = '';
-          this.password = '';
-          //remove access token to simulate logout from local storage and cookie
-          localStorage.removeItem('token');
-          this.cookie.deleteCookie('jwt');
-          window.location.href = '/';
-        },
-        error: (err) => {
-          console.error('Logout failed:', err);
-          this.ErrorMessage = 'Logout failed. Please try again.';
-          this.errormsg = true;
-        },
-      });
-    } catch (error) {
-      console.error('Error in logout method:', error);
-      this.ErrorMessage = 'An error occurred while logging out.';
-      this.errormsg = true;
-    }
-  }
-
-  updateEndMenuItemsVisibility(isLoggedIn: boolean) {
-    this.menuItems.forEach((item, idx) => {
-      if (item.styleClass === '.p-menubar-end') {
-        // Show Profile and Logout only when logged in
-        if (item.label === 'Profile' || item.label === 'Logout') {
-          item.visible = isLoggedIn;
-        }
-        // Show Register and Login only when logged out
-        if (item.label === 'Register' || item.label === 'Login') {
-          item.visible = !isLoggedIn;
-        }
-      }
+  logout(): void {
+    this.errorMessage = '';
+    this.authService.logout().subscribe({
+      next: () => {
+        this.isLoggedIn = false;
+        this.displayLoginDialog = false;
+        this.displayRegisterDialog = false;
+        localStorage.removeItem('token');
+        this.cookie.deleteCookie('jwt');
+        void this.router.navigate(['/']);
+      },
+      error: (err) => {
+        console.error('Logout failed:', err);
+        this.errorMessage = err?.message || 'Sign out failed. Please try again.';
+      },
     });
-    this.menuItems = [...this.menuItems]; // triggers change detection
   }
 }

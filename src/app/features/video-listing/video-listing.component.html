@@ -1,25 +1,55 @@
-<div class="listing">
-  <div *ngIf="loading" class="listing__loading">Loading videos…</div>
+<main class="browse">
+  <section class="browse__intro" aria-labelledby="browse-title">
+    <p class="browse__eyebrow">YOUR NEXT FAVORITE</p>
+    <h1 id="browse-title">{{ query ? 'Search results' : 'Discover videos' }}</h1>
+    <p>{{ query ? 'Results for “' + query + '”' : 'Fresh ideas, stories, and inspiration picked for you.' }}</p>
+  </section>
 
-  <div class="listing__grid" *ngIf="!loading">
-    <a
-      class="listing-card"
-      *ngFor="let video of videos"
-      [routerLink]="['/watch', video._id]"
-    >
-      <img class="listing-card__thumb" [src]="video.thumbnailUrl" [alt]="video.title" />
-      <div class="listing-card__meta">
-        <img
-          class="listing-card__avatar"
-          [src]="video.channel.avatarUrl || '/assets/default-avatar.png'"
-          alt=""
-        />
-        <div>
-          <div class="listing-card__title">{{ video.title }}</div>
-          <div class="listing-card__channel">{{ video.channel.username }}</div>
-          <div class="listing-card__stats">{{ video.views | number }} views</div>
+  <nav class="browse__categories" aria-label="Filter videos by category" *ngIf="!query && !loading && !error && videos.length">
+    <button
+      *ngFor="let category of categories"
+      type="button"
+      [class.browse__category--active]="selectedCategory === category"
+      [attr.aria-pressed]="selectedCategory === category"
+      (click)="selectedCategory = category"
+    >{{ category }}</button>
+  </nav>
+
+  <p class="browse__status" role="status" *ngIf="loading">Finding videos for you…</p>
+
+  <section *ngIf="!loading && error" class="browse__message" role="alert">
+    <span class="pi pi-cloud" aria-hidden="true"></span>
+    <h2>Videos are taking a break</h2>
+    <p>{{ error }}</p>
+    <button type="button" (click)="retry()">Try again</button>
+  </section>
+
+  <section *ngIf="!loading && !error && !visibleVideos.length" class="browse__message" aria-live="polite">
+    <span class="pi pi-search" aria-hidden="true"></span>
+    <h2>{{ query ? 'No matches yet' : 'Nothing here just yet' }}</h2>
+    <p>{{ query ? 'Try a different search or check the spelling.' : 'Check back soon for new videos to explore.' }}</p>
+  </section>
+
+  <section class="browse__grid" aria-label="Videos" *ngIf="!loading && !error && visibleVideos.length">
+    <article class="video-card" *ngFor="let video of visibleVideos">
+      <a class="video-card__link" [routerLink]="['/watch', video._id]" [attr.aria-label]="'Watch ' + video.title">
+        <div class="video-card__image">
+          <img [src]="video.thumbnailUrl" [alt]="video.title" loading="lazy" />
+          <span class="video-card__duration" *ngIf="video.durationSeconds">
+            {{ video.durationSeconds * 1000 | date:'m:ss':'UTC' }}
+          </span>
+        </div>
+      </a>
+      <div class="video-card__details">
+        <a class="video-card__avatar-link" [routerLink]="['/channel', video.channel._id]" [attr.aria-label]="'Visit ' + video.channel.username + ' channel'">
+          <img class="video-card__avatar" [src]="video.channel.avatarUrl || '/assets/default-avatar.png'" alt="" loading="lazy" />
+        </a>
+        <div class="video-card__copy">
+          <a class="video-card__title" [routerLink]="['/watch', video._id]">{{ video.title }}</a>
+          <a class="video-card__channel" [routerLink]="['/channel', video.channel._id]">{{ video.channel.username }}</a>
+          <p class="video-card__stats">{{ video.views | number }} views <span aria-hidden="true">·</span> {{ video.createdAt | date:'mediumDate' }}</p>
         </div>
       </div>
-    </a>
-  </div>
-</div>
+    </article>
+  </section>
+</main>

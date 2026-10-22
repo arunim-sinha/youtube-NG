@@ -1,6 +1,8 @@
-.engagement { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; }
-.engagement__reactions { display: flex; gap: 4px; background: #f2f2f2; border-radius: 18px; overflow: hidden; }
-.engagement__btn {
-  background: none; border: none; padding: 8px 16px; font-weight: 600; cursor: pointer; font-size: 14px;
-}
-.engagement__btn--active { color: #065fd4; }
+.engagement { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0; }
+.engagement__reactions { display: inline-flex; overflow: hidden; border: 1px solid var(--surface-200, #e8e4ed); border-radius: 999px; background: var(--surface-100, #f4f2f7); }
+.engagement__btn, .engagement__share { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; background: transparent; color: var(--text-color, #352d40); padding: 10px 15px; font-size: 13px; font-weight: 700; cursor: pointer; }
+.engagement__btn:hover, .engagement__share:hover { background: var(--surface-200, #e9e5ef); }
+.engagement__btn--active { color: #6c38cb; }
+.engagement__btn:disabled { cursor: wait; opacity: .7; }
+.engagement__share { border-radius: 999px; background: var(--surface-100, #f4f2f7); }
+.engagement__message { margin: 0; color: var(--text-color-secondary, #656070); font-size: 12px; }

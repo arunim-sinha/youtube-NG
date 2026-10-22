@@ -18,6 +18,7 @@ export class VideoListManageComponent {
   @Output() videosChanged = new EventEmitter<Video[]>();
 
   busyId: string | null = null;
+  error = '';
 
   constructor(private videoService: VideoService) {}
 
@@ -26,24 +27,32 @@ export class VideoListManageComponent {
   toggleVisibility(video: Video): void {
     const next = video.visibility === 'public' ? 'unlisted' : video.visibility === 'unlisted' ? 'private' : 'public';
     this.busyId = video._id;
+    this.error = '';
     this.videoService.setVisibility(video._id, next).subscribe({
       next: (updated) => {
         this.videosChanged.emit(this.videos.map((v) => (v._id === updated._id ? updated : v)));
         this.busyId = null;
       },
-      error: () => (this.busyId = null),
+      error: () => {
+        this.error = 'Video visibility could not be updated.';
+        this.busyId = null;
+      },
     });
   }
 
   deleteVideo(video: Video): void {
     if (!confirm(`Delete "${video.title}"? This cannot be undone.`)) return;
     this.busyId = video._id;
+    this.error = '';
     this.videoService.delete(video._id).subscribe({
       next: () => {
         this.videosChanged.emit(this.videos.filter((v) => v._id !== video._id));
         this.busyId = null;
       },
-      error: () => (this.busyId = null),
+      error: () => {
+        this.error = 'This video could not be deleted.';
+        this.busyId = null;
+      },
     });
   }
 }

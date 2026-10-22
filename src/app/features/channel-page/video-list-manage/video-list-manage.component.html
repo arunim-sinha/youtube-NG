@@ -1,5 +1,6 @@
 <section class="manage">
   <h2>Your uploads</h2>
+  <p *ngIf="error" class="manage__error" role="alert">{{ error }}</p>
   <p class="manage__empty" *ngIf="!videos.length">You haven't uploaded any videos yet.</p>
 
   <ul class="manage__list">

@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { MenubarModule } from 'primeng/menubar';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
-  imports: [MenubarModule],
+  imports: [RouterModule],
   templateUrl: './footer.component.html',
-  styleUrl: './footer.component.css'
+  styleUrl: './footer.component.css',
 })
 export class FooterComponent {
-
+  readonly year = new Date().getFullYear();
 }

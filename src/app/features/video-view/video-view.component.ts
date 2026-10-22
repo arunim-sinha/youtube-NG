@@ -3,8 +3,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Subscription, catchError, of, switchMap } from 'rxjs';
 import { Video } from '../../core/models/video.model';
 import { VideoService } from '../../core/services/video.service';
 import { VideoPlayerComponent } from './video-player/video-player.component';
@@ -33,6 +32,7 @@ export class VideoViewComponent implements OnInit, OnDestroy {
   video: Video | null = null;
   loading = true;
   error = '';
+  notice = '';
   private routeSub?: Subscription;
   private viewLogged = false;
 
@@ -44,18 +44,25 @@ export class VideoViewComponent implements OnInit, OnDestroy {
         switchMap((params) => {
           this.loading = true;
           this.viewLogged = false;
-          return this.videoService.getById(params.get('id')!);
+          this.video = null;
+          this.error = '';
+          this.notice = '';
+          const id = params.get('id');
+          if (!id) {
+            this.error = 'This video could not be found or is unavailable.';
+            return of(null);
+          }
+          return this.videoService.getById(id).pipe(
+            catchError(() => {
+              this.error = 'This video could not be found or is unavailable.';
+              return of(null);
+            })
+          );
         })
       )
-      .subscribe({
-        next: (video) => {
-          this.video = video;
-          this.loading = false;
-        },
-        error: () => {
-          this.error = 'This video could not be found or is unavailable.';
-          this.loading = false;
-        },
+      .subscribe((video) => {
+        this.video = video;
+        this.loading = false;
       });
   }
 
@@ -64,8 +71,31 @@ export class VideoViewComponent implements OnInit, OnDestroy {
   onPlaybackStarted(): void {
     if (this.viewLogged || !this.video) return;
     this.viewLogged = true;
-    this.videoService.registerView(this.video._id).subscribe((res) => {
-      if (this.video) this.video.views = res.views;
+    const videoId = this.video._id;
+    this.videoService.registerView(videoId).subscribe({
+      next: (res) => {
+        if (this.video?._id === videoId) this.video.views = res.views;
+      },
+      error: () => {
+        this.notice = 'Your view could not be recorded. Playback will continue normally.';
+      },
+    });
+  }
+
+  retry(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) return;
+    this.loading = true;
+    this.error = '';
+    this.videoService.getById(id).subscribe({
+      next: (video) => {
+        this.video = video;
+        this.loading = false;
+      },
+      error: () => {
+        this.error = 'This video could not be found or is unavailable.';
+        this.loading = false;
+      },
     });
   }
 

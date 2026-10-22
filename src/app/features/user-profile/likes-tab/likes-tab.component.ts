@@ -15,16 +15,26 @@ import { UserService } from '../../../core/services/user.service';
 export class LikesTabComponent implements OnInit {
   videos: Video[] = [];
   loading = true;
+  error = '';
 
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
+    this.load();
+  }
+
+  load(): void {
+    this.loading = true;
+    this.error = '';
     this.userService.getLikedVideos().subscribe({
       next: (videos) => {
         this.videos = videos;
         this.loading = false;
       },
-      error: () => (this.loading = false),
+      error: () => {
+        this.loading = false;
+        this.error = 'Liked videos could not be loaded.';
+      },
     });
   }
 }

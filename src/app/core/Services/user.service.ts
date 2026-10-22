@@ -20,7 +20,7 @@ export class UserService {
   }
 
   getHistory(page = 1): Observable<WatchHistoryEntry[]> {
-    return this.http.get<WatchHistoryEntry[]>(`${this.base}/me/history`, { params: { page } as any });
+    return this.http.get<WatchHistoryEntry[]>(`${this.base}/me/history`, { params: { page } });
   }
 
   removeHistoryEntry(videoId: string): Observable<{ message: string }> {
@@ -32,6 +32,6 @@ export class UserService {
   }
 
   getLikedVideos(page = 1): Observable<Video[]> {
-    return this.http.get<Video[]>(`${this.base}/me/likes`, { params: { page } as any });
+    return this.http.get<Video[]>(`${this.base}/me/likes`, { params: { page } });
   }
 }

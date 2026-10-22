@@ -1,8 +1,36 @@
-<div class="channel-page">
-  <h1>Your Channel</h1>
-  <app-upload-section (uploaded)="onUploaded($event)"></app-upload-section>
+<main class="channel-page">
+  <header class="channel-page__header">
+    <p class="channel-page__eyebrow">{{ isStudio ? 'CREATOR SPACE' : 'CHANNEL' }}</p>
+    <h1>{{ isStudio ? 'Your videos' : 'Videos from this creator' }}</h1>
+    <p>{{ isStudio ? 'Manage visibility and remove videos from your channel.' : 'Explore the latest videos from this channel.' }}</p>
+  </header>
 
-  <div *ngIf="loading">Loading your videos…</div>
-  <app-video-list-manage *ngIf="!loading" [videos]="videos" (videosChanged)="onVideosChanged($event)">
-  </app-video-list-manage>
-</div>
+  <p *ngIf="loading" class="channel-page__state" role="status">Loading videos…</p>
+  <section *ngIf="error" class="channel-page__state" role="alert">
+    <p>{{ error }}</p>
+    <button type="button" (click)="retry()">Try again</button>
+  </section>
+
+  <ng-container *ngIf="!loading && !error">
+    <app-video-list-manage
+      *ngIf="isStudio"
+      [videos]="videos"
+      (videosChanged)="onVideosChanged($event)"
+    ></app-video-list-manage>
+
+    <p *ngIf="!isStudio && !videos.length" class="channel-page__empty">
+      This channel hasn’t published any public videos yet.
+    </p>
+
+    <section *ngIf="!isStudio && videos.length" class="channel-page__grid" aria-label="Channel videos">
+      <article *ngFor="let video of videos" class="channel-video">
+        <a class="channel-video__thumbnail" [routerLink]="['/watch', video._id]" [attr.aria-label]="'Watch ' + video.title">
+          <img [src]="video.thumbnailUrl" [alt]="video.title" loading="lazy" />
+          <span *ngIf="video.durationSeconds">{{ video.durationSeconds * 1000 | date:'m:ss':'UTC' }}</span>
+        </a>
+        <a class="channel-video__title" [routerLink]="['/watch', video._id]">{{ video.title }}</a>
+        <p>{{ video.views | number }} views <span aria-hidden="true">·</span> {{ video.createdAt | date:'mediumDate' }}</p>
+      </article>
+    </section>
+  </ng-container>
+</main>

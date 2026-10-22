@@ -71,17 +71,17 @@ export class RegistrationComponent {
       .subscribe({
         next: (res) => {
           this.loading = false;
-          if (res && res['successCode'] === 200 && res['success'] !== false) {
+          if (res.successCode === 201 && res.success !== false) {
             this.Cancel();
           } else {
             this.errormsg = true;
-            this.ErrorMessage = res['message'] || 'Registration failed';
+            this.ErrorMessage = res.message || 'Registration failed';
           }
         },
         error: (err) => {
           this.loading = false;
           this.errormsg = true;
-          this.ErrorMessage = 'Registration failed due to unknown error';
+          this.ErrorMessage = err?.error?.message || err?.message || 'Registration failed. Please try again.';
         },
       });
   }

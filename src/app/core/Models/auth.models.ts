@@ -11,6 +11,16 @@ export interface RegisterRequest {
 }
 
 export interface AuthResponse {
-  token: string;
-  [key: string]: any;
+  successCode?: number;
+  success?: boolean;
+  message?: string;
+  data?: {
+    accessToken?: string;
+    refreshToken?: string;
+    user?: {
+      _id: string;
+      userName: string;
+      email: string;
+    };
+  };
 }

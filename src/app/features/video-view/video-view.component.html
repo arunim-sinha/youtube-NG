@@ -1,21 +1,28 @@
-<div class="video-view" *ngIf="!loading; else loadingTpl">
+<main class="watch-page" *ngIf="!loading; else loadingTpl">
   <ng-container *ngIf="video; else errorTpl">
-    <div class="video-view__main">
+    <section class="watch-page__main" aria-label="Video">
       <app-video-player [video]="video" (playbackStarted)="onPlaybackStarted()"></app-video-player>
       <app-video-info [video]="video"></app-video-info>
+      <p *ngIf="notice" class="watch-page__notice" role="status">{{ notice }}</p>
       <app-engagement-bar [video]="video" (reactionChanged)="onReactionChanged($event)"></app-engagement-bar>
       <app-creator-info [channel]="video.channel"></app-creator-info>
       <app-comment-section [videoId]="video._id" [commentCount]="video.commentCount"></app-comment-section>
-    </div>
-    <aside class="video-view__sidebar">
+    </section>
+    <aside class="watch-page__sidebar" aria-label="Recommended videos">
+      <h2 class="watch-page__sidebar-title">Up next</h2>
       <app-related-videos [videoId]="video._id"></app-related-videos>
     </aside>
   </ng-container>
   <ng-template #errorTpl>
-    <p class="video-view__error">{{ error }}</p>
+    <section class="watch-page__state" role="alert">
+      <span class="pi pi-video" aria-hidden="true"></span>
+      <h1>We couldn't load this video</h1>
+      <p>{{ error }}</p>
+      <button type="button" (click)="retry()">Try again</button>
+    </section>
   </ng-template>
-</div>
+</main>
 
 <ng-template #loadingTpl>
-  <div class="video-view__loading">Loading video…</div>
+  <main class="watch-page watch-page__loading" role="status" aria-live="polite">Loading video…</main>
 </ng-template>

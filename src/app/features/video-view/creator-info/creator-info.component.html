@@ -12,12 +12,7 @@
       </div>
     </div>
   </a>
-  <button
-    class="creator-info__subscribe"
-    [class.creator-info__subscribe--active]="subscribed"
-    type="button"
-    (click)="toggleSubscribe()"
-  >
-    {{ subscribed ? 'Subscribed' : 'Subscribe' }}
-  </button>
+  <a class="creator-info__channel-link" [routerLink]="['/channel', channel._id]">
+    View channel <i class="pi pi-arrow-up-right" aria-hidden="true"></i>
+  </a>
 </div>

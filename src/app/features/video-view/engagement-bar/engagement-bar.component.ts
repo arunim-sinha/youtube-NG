@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Video } from '../../../core/models/video.model';
 import { VideoService } from '../../../core/services/video.service';
+import { AuthService } from '../../../core/Services/AuthService/auth.service';
 
 @Component({
   selector: 'app-engagement-bar',
@@ -16,12 +17,18 @@ export class EngagementBarComponent {
   @Output() reactionChanged = new EventEmitter<Video>();
 
   reacting = false;
+  message = '';
 
-  constructor(private videoService: VideoService) {}
+  constructor(private videoService: VideoService, private authService: AuthService) {}
 
   react(type: 'like' | 'dislike'): void {
     if (this.reacting) return;
+    if (!this.authService.isLoggedIn()) {
+      this.message = 'Sign in to react to videos.';
+      return;
+    }
     this.reacting = true;
+    this.message = '';
 
     const previous = this.video.myReaction ?? null;
     // optimistic update
@@ -36,6 +43,7 @@ export class EngagementBarComponent {
       error: () => {
         this.applyOptimistic(previous, this.video.myReaction ?? null); // revert
         this.reacting = false;
+        this.message = 'Your reaction could not be saved. Please try again.';
       },
     });
   }
@@ -55,9 +63,19 @@ export class EngagementBarComponent {
   share(): void {
     const url = window.location.href;
     if (navigator.share) {
-      navigator.share({ title: this.video.title, url }).catch(() => {});
+      navigator.share({ title: this.video.title, url }).then(
+        () => { this.message = 'Video shared.'; },
+        () => { this.message = 'Sharing was cancelled or unavailable.'; }
+      );
     } else {
-      navigator.clipboard?.writeText(url);
+      if (!navigator.clipboard) {
+        this.message = 'Copy the page address to share this video.';
+        return;
+      }
+      navigator.clipboard.writeText(url).then(
+        () => { this.message = 'Link copied to clipboard.'; },
+        () => { this.message = 'Could not copy the link. Copy the page address to share it.'; }
+      );
     }
   }
 }

@@ -17,18 +17,27 @@ export class RelatedVideosComponent implements OnChanges {
   @Input() videoId!: string;
   videos: Video[] = [];
   loading = false;
+  error = '';
 
   constructor(private videoService: VideoService) {}
 
   ngOnChanges(): void {
     if (!this.videoId) return;
     this.loading = true;
+    this.error = '';
     this.videoService.getRelated(this.videoId).subscribe({
       next: (videos) => {
         this.videos = videos;
         this.loading = false;
       },
-      error: () => (this.loading = false),
+      error: () => {
+        this.loading = false;
+        this.error = 'Related videos could not be loaded.';
+      },
     });
+  }
+
+  retry(): void {
+    this.ngOnChanges();
   }
 }

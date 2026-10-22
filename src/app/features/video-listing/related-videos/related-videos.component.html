@@ -1,7 +1,11 @@
 <div class="related">
-  <div *ngIf="loading" class="related__loading">Loading…</div>
+  <p *ngIf="loading" class="related__loading" role="status">Finding more to watch…</p>
+  <div *ngIf="error" class="related__message" role="alert">
+    <p>{{ error }}</p><button type="button" (click)="retry()">Retry</button>
+  </div>
+  <p *ngIf="!loading && !error && !videos.length" class="related__empty">No related videos yet.</p>
   <a class="related-item" *ngFor="let video of videos" [routerLink]="['/watch', video._id]">
-    <img class="related-item__thumb" [src]="video.thumbnailUrl" [alt]="video.title" />
+    <img class="related-item__thumb" [src]="video.thumbnailUrl" [alt]="video.title" loading="lazy" />
     <div class="related-item__meta">
       <div class="related-item__title">{{ video.title }}</div>
       <div class="related-item__channel">{{ video.channel.username }}</div>

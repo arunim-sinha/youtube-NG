@@ -23,11 +23,11 @@ export class VideoService {
   }
 
   getRecommendations(limit = 20): Observable<Video[]> {
-    return this.http.get<Video[]>(`${this.base}/recommendations`, { params: { limit } as any });
+    return this.http.get<Video[]>(`${this.base}/recommendations`, { params: { limit } });
   }
 
   getRelated(id: string, limit = 15): Observable<Video[]> {
-    return this.http.get<Video[]>(`${this.base}/${id}/related`, { params: { limit } as any });
+    return this.http.get<Video[]>(`${this.base}/${id}/related`, { params: { limit } });
   }
 
   search(query: string): Observable<Video[]> {

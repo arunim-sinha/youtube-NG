@@ -13,11 +13,4 @@ import { ChannelRef } from '../../../core/models/video.model';
 })
 export class CreatorInfoComponent {
   @Input() channel!: ChannelRef;
-  // Local-only until a subscription API/model exists in the base app;
-  // wire this to a SubscriptionService once that endpoint is added.
-  subscribed = false;
-
-  toggleSubscribe(): void {
-    this.subscribed = !this.subscribed;
-  }
 }

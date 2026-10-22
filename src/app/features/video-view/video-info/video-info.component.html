@@ -12,7 +12,7 @@
       <span class="tag" *ngFor="let tag of video.tags">#{{ tag }}</span>
     </div>
   </div>
-  <button class="video-info__toggle" type="button" (click)="toggleExpanded()">
+  <button class="video-info__toggle" type="button" [attr.aria-expanded]="expanded" (click)="toggleExpanded()">
     {{ expanded ? 'Show less' : 'Show more' }}
   </button>
 </div>

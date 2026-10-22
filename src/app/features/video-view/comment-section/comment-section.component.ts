@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Comment } from '../../../core/models/comment.model';
 import { CommentService } from '../../../core/services/comment.service';
+import { AuthService } from '../../../core/Services/AuthService/auth.service';
 
 @Component({
   selector: 'app-comment-section',
@@ -21,8 +22,10 @@ export class CommentSectionComponent implements OnChanges {
   newCommentText = '';
   replyingTo: string | null = null;
   replyText = '';
+  error = '';
+  posting = false;
 
-  constructor(private commentService: CommentService) {}
+  constructor(private commentService: CommentService, private authService: AuthService) {}
 
   ngOnChanges(): void {
     if (this.videoId) this.loadComments();
@@ -30,22 +33,39 @@ export class CommentSectionComponent implements OnChanges {
 
   loadComments(): void {
     this.loading = true;
+    this.error = '';
     this.commentService.getComments(this.videoId).subscribe({
       next: (res) => {
         this.comments = res.comments;
         this.loading = false;
       },
-      error: () => (this.loading = false),
+      error: () => {
+        this.loading = false;
+        this.error = 'Comments could not be loaded.';
+      },
     });
   }
 
   postComment(): void {
     const text = this.newCommentText.trim();
-    if (!text) return;
-    this.commentService.addComment(this.videoId, text).subscribe((comment) => {
-      this.comments = [{ ...comment, replies: [] }, ...this.comments];
-      this.commentCount++;
-      this.newCommentText = '';
+    if (!text || this.posting) return;
+    if (!this.authService.isLoggedIn()) {
+      this.error = 'Sign in to join the conversation.';
+      return;
+    }
+    this.posting = true;
+    this.error = '';
+    this.commentService.addComment(this.videoId, text).subscribe({
+      next: (comment) => {
+        this.comments = [{ ...comment, replies: [] }, ...this.comments];
+        this.commentCount++;
+        this.newCommentText = '';
+        this.posting = false;
+      },
+      error: () => {
+        this.error = 'Your comment could not be posted. Please try again.';
+        this.posting = false;
+      },
     });
   }
 
@@ -61,21 +81,40 @@ export class CommentSectionComponent implements OnChanges {
 
   postReply(parent: Comment): void {
     const text = this.replyText.trim();
-    if (!text) return;
-    this.commentService.addComment(this.videoId, text, parent._id).subscribe((reply) => {
-      parent.replies = [...(parent.replies || []), reply];
-      this.cancelReply();
+    if (!text || this.posting) return;
+    if (!this.authService.isLoggedIn()) {
+      this.error = 'Sign in to reply to a comment.';
+      return;
+    }
+    this.posting = true;
+    this.error = '';
+    this.commentService.addComment(this.videoId, text, parent._id).subscribe({
+      next: (reply) => {
+        parent.replies = [...(parent.replies || []), reply];
+        this.cancelReply();
+        this.posting = false;
+      },
+      error: () => {
+        this.error = 'Your reply could not be posted. Please try again.';
+        this.posting = false;
+      },
     });
   }
 
   deleteComment(comment: Comment, parent?: Comment): void {
-    this.commentService.deleteComment(comment._id).subscribe(() => {
-      if (parent) {
-        parent.replies = (parent.replies || []).filter((r) => r._id !== comment._id);
-      } else {
-        this.comments = this.comments.filter((c) => c._id !== comment._id);
-        this.commentCount--;
-      }
+    this.error = '';
+    this.commentService.deleteComment(comment._id).subscribe({
+      next: () => {
+        if (parent) {
+          parent.replies = (parent.replies || []).filter((r) => r._id !== comment._id);
+        } else {
+          this.comments = this.comments.filter((c) => c._id !== comment._id);
+          this.commentCount--;
+        }
+      },
+      error: () => {
+        this.error = 'This comment could not be deleted.';
+      },
     });
   }
 }

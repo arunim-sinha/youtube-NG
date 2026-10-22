@@ -1,7 +1,9 @@
-.profile { padding: 16px 24px; }
-.profile__tabs { display: flex; gap: 8px; border-bottom: 1px solid #e5e5e5; margin-bottom: 16px; }
-.profile__tab {
-  background: none; border: none; padding: 12px 16px; font-weight: 600; cursor: pointer;
-  border-bottom: 2px solid transparent; color: #606060;
-}
-.profile__tab--active { color: #0f0f0f; border-bottom-color: #065fd4; }
+.profile { max-width: 1100px; min-height: 72vh; margin: 0 auto; padding: 38px clamp(18px, 5vw, 68px) 72px; }
+.profile__intro { margin-bottom: 28px; }
+.profile__intro p { margin: 0 0 7px; color: #7c3aed; font-size: 11px; font-weight: 800; letter-spacing: .15em; }
+.profile__intro h1 { margin: 0; font-size: clamp(28px, 4vw, 38px); letter-spacing: -.04em; }
+.profile__intro span { display: block; margin-top: 8px; color: var(--text-color-secondary, #737373); font-size: 14px; }
+.profile__tabs { display: flex; gap: 6px; overflow-x: auto; border-bottom: 1px solid var(--surface-200, #e9e5ed); margin-bottom: 24px; }
+.profile__tab { flex: 0 0 auto; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--text-color-secondary, #737373); padding: 13px 16px; font-size: 13px; font-weight: 700; cursor: pointer; }
+.profile__tab--active { border-bottom-color: #713cc9; color: #713cc9; }
+.profile__content { min-height: 280px; }

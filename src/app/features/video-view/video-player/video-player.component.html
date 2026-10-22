@@ -5,8 +5,10 @@
     [poster]="video.thumbnailUrl"
     controls
     (play)="onPlay()"
+    (error)="onError()"
   >
     <source [src]="video.videoUrl" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
+  <p *ngIf="playbackError" class="player__error" role="alert">This video could not be played. Try again later or choose another video.</p>
 </div>

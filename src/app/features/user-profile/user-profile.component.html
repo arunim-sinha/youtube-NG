@@ -1,9 +1,15 @@
 <div class="profile">
-  <nav class="profile__tabs">
+  <header class="profile__intro">
+    <p>YOUR SPACE</p>
+    <h1>Your account</h1>
+    <span>Manage your profile and pick up where you left off.</span>
+  </header>
+  <nav class="profile__tabs" aria-label="Account sections">
     <button
       type="button"
       class="profile__tab"
       [class.profile__tab--active]="activeTab === 'general'"
+      [attr.aria-pressed]="activeTab === 'general'"
       (click)="setTab('general')"
     >
       General Information
@@ -12,6 +18,7 @@
       type="button"
       class="profile__tab"
       [class.profile__tab--active]="activeTab === 'history'"
+      [attr.aria-pressed]="activeTab === 'history'"
       (click)="setTab('history')"
     >
       History
@@ -20,6 +27,7 @@
       type="button"
       class="profile__tab"
       [class.profile__tab--active]="activeTab === 'likes'"
+      [attr.aria-pressed]="activeTab === 'likes'"
       (click)="setTab('likes')"
     >
       Likes

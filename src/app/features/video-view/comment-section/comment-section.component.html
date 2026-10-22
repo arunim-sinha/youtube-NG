@@ -2,15 +2,23 @@
   <h3 class="comments__heading">{{ commentCount | number }} Comments</h3>
 
   <div class="comments__composer">
+    <label class="visually-hidden" for="new-comment">Add a comment</label>
     <textarea
+      id="new-comment"
       [(ngModel)]="newCommentText"
       placeholder="Add a comment…"
       rows="2"
     ></textarea>
-    <button type="button" [disabled]="!newCommentText.trim()" (click)="postComment()">Comment</button>
+    <button type="button" [disabled]="!newCommentText.trim() || posting" (click)="postComment()">
+      {{ posting ? 'Posting…' : 'Comment' }}
+    </button>
   </div>
 
-  <div *ngIf="loading" class="comments__loading">Loading comments…</div>
+  <p *ngIf="error" class="comments__error" role="alert">{{ error }}</p>
+  <div *ngIf="loading" class="comments__loading" role="status">Loading comments…</div>
+  <div *ngIf="!loading && error === 'Comments could not be loaded.'" class="comments__retry">
+    <button type="button" (click)="loadComments()">Try again</button>
+  </div>
 
   <ul class="comments__list" *ngIf="!loading">
     <li class="comment" *ngFor="let comment of comments">
@@ -27,9 +35,10 @@
         </div>
 
         <div class="comment__reply-box" *ngIf="replyingTo === comment._id">
-          <textarea [(ngModel)]="replyText" rows="2" placeholder="Reply…"></textarea>
+          <label class="visually-hidden" [for]="'reply-' + comment._id">Reply to {{ comment.author.username }}</label>
+          <textarea [id]="'reply-' + comment._id" [(ngModel)]="replyText" rows="2" placeholder="Reply…"></textarea>
           <div>
-            <button type="button" [disabled]="!replyText.trim()" (click)="postReply(comment)">Reply</button>
+            <button type="button" [disabled]="!replyText.trim() || posting" (click)="postReply(comment)">Reply</button>
             <button type="button" (click)="cancelReply()">Cancel</button>
           </div>
         </div>
@@ -52,4 +61,5 @@
       </div>
     </li>
   </ul>
+  <p *ngIf="!loading && !error && !comments.length" class="comments__empty">Be the first to share a thought.</p>
 </section>

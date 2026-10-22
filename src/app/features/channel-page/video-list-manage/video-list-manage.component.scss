@@ -1,4 +1,5 @@
 .manage__empty { color: #606060; }
+.manage__error { border-radius: 8px; background: #fff0f0; color: #9c2525; padding: 10px 12px; font-size: 13px; }
 .manage__list { list-style: none; margin: 0; padding: 0; }
 .manage-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
 .manage-item__thumb { width: 140px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; }

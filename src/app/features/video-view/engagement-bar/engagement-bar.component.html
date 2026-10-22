@@ -1,21 +1,22 @@
-<div class="engagement">
-  <div class="engagement__reactions">
+<section class="engagement" aria-label="Video actions">
+  <div class="engagement__reactions" aria-label="Reactions">
     <button
       type="button"
       class="engagement__btn"
       [class.engagement__btn--active]="video.myReaction === 'like'"
+      [attr.aria-pressed]="video.myReaction === 'like'"
+      [disabled]="reacting"
       (click)="react('like')"
-    >
-      👍 {{ video.likeCount | number }}
-    </button>
+    ><i class="pi pi-thumbs-up" aria-hidden="true"></i><span>{{ video.likeCount | number }}</span></button>
     <button
       type="button"
       class="engagement__btn"
       [class.engagement__btn--active]="video.myReaction === 'dislike'"
+      [attr.aria-pressed]="video.myReaction === 'dislike'"
+      [disabled]="reacting"
       (click)="react('dislike')"
-    >
-      👎 {{ video.dislikeCount | number }}
-    </button>
+    ><i class="pi pi-thumbs-down" aria-hidden="true"></i><span>{{ video.dislikeCount | number }}</span></button>
   </div>
-  <button type="button" class="engagement__btn" (click)="share()">↗ Share</button>
-</div>
+  <button type="button" class="engagement__share" (click)="share()"><i class="pi pi-share-alt" aria-hidden="true"></i> Share</button>
+</section>
+<p class="engagement__message" *ngIf="message" role="status">{{ message }}</p>

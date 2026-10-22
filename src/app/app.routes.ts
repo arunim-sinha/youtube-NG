@@ -9,24 +9,9 @@ export const routes: Routes = [
   { path: '', component: VideoListingComponent },
   { path: 'watch/:id', component: VideoViewComponent },
   { path: 'channel/:id', component: ChannelPageComponent },
+  { path: 'studio/:id', component: ChannelPageComponent, canActivate: [authGuard] },
   { path: 'me/profile', component: UserProfileComponent, canActivate: [authGuard] },
 
-  {
-    path: 'home',
-    loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent),
-  },
-  {
-    path: 'about',
-    loadComponent: () => import('./pages/about/about.component').then(m => m.AboutComponent),
-  },
-  {
-    path: 'profile',
-    loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent),
-    canActivate: [authGuard],
-  },
-  {
-    path: 'services',
-    loadComponent: () => import('./pages/services/services.component').then(m => m.ServicesComponent),
-  },
+  { path: 'profile', redirectTo: 'me/profile', pathMatch: 'full' },
   { path: '**', redirectTo: '' },
 ];

@@ -6,8 +6,5 @@
 .creator-info__avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
 .creator-info__name { font-weight: 600; }
 .creator-info__subs { font-size: 12px; color: #606060; }
-.creator-info__subscribe {
-  background: #0f0f0f; color: #fff; border: none; border-radius: 18px;
-  padding: 10px 16px; font-weight: 600; cursor: pointer;
-}
-.creator-info__subscribe--active { background: #e5e5e5; color: #0f0f0f; }
+.creator-info__channel-link { display: inline-flex; align-items: center; gap: 7px; border-radius: 999px; background: var(--surface-100, #f2eff7); color: var(--text-color, #352d40); padding: 10px 15px; font-size: 12px; font-weight: 700; text-decoration: none; }
+.creator-info__channel-link:hover { color: #6c38cb; }

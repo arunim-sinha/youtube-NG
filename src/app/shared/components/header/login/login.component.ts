@@ -31,48 +31,46 @@ export class LoginComponent {
   password: string = '';
   isLoggedIn: boolean = false; // Set to false initially to simulate logged-out state
   ErrorMessage: string = '';
+  loading = false;
   errormsg: boolean = false;
   constructor(authService: AuthService, private cookie: CookieManager) {
     this.authService = authService;
   }
   loginUser() {
-    if (
-      this.username !== null &&
-      this.username !== undefined &&
-      this.password !== null &&
-      this.password !== undefined
-    ) {
-        this.authService.login({ userName: this.username, password: this.password }).subscribe({
+    if (this.username.trim() && this.password) {
+      this.loading = true;
+      this.errormsg = false;
+      this.authService.login({ userName: this.username.trim(), password: this.password }).subscribe({
         next: res => {
-           if (res && res['successCode'] === 200 && res['success']!== false) {
+           this.loading = false;
+           const accessToken = res.data?.accessToken;
+           if (res.successCode === 200 && res.success !== false && accessToken) {
              this.displayLoginDialog = false;
              this.isLoggedIn = true;
-             const accessToken = res['data'].accessToken;
              localStorage.setItem('token', accessToken);
               // Set the cookie with the access token
               this.cookie.setCookie('jwt', accessToken, 1);
              this.displayLoginDialogChange.emit(this.isLoggedIn);
            }
            else {
-            console.error('Login failed', res);
-            this.errormsg = true;
-            this.ErrorMessage = res['message'] || 'Login failed due to unknown error';
+             this.errormsg = true;
+             this.ErrorMessage = res.message || 'Login failed. Please check your details and try again.';
             this.displayLoginDialog = true;
             this.isLoggedIn = false;
           }
           // navigate, show success, etc.
         },
         error: err => {
-          console.error('Login failed', err);
+          this.loading = false;
             this.errormsg = true;
-            this.ErrorMessage = 'Login failed due to unknown error';
+            this.ErrorMessage = err?.error?.message || err?.message || 'Login failed. Please try again.';
             this.displayLoginDialog = true;
             this.isLoggedIn = false;
         }
       });
     } else {
       this.errormsg = true;
-      this.ErrorMessage = 'Login failed due to null or undefined inputs';
+      this.ErrorMessage = 'Enter your username and password to continue.';
       this.displayLoginDialog = true;
       this.isLoggedIn = false;
     }
