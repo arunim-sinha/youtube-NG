@@ -2,8 +2,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Video } from '../../../core/models/video.model';
-import { UserService } from '../../../core/services/user.service';
+import { Video } from '../../../core/Models/video.model';
+import { UserService } from '../../../core/Services/user.service';
 
 @Component({
   selector: 'app-likes-tab',

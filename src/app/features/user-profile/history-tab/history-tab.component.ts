@@ -2,8 +2,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { WatchHistoryEntry } from '../../../core/models/user.model';
-import { UserService } from '../../../core/services/user.service';
+import { WatchHistoryEntry } from '../../../core/Models/user.model';
+import { UserService } from '../../../core/Services/user.service';
 
 @Component({
   selector: 'app-history-tab',

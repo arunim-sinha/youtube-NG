@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Subscription, catchError, of, switchMap } from 'rxjs';
-import { Video } from '../../core/models/video.model';
-import { VideoService } from '../../core/services/video.service';
+import { Video } from '../../core/Models/video.model';
+import { VideoService } from '../../core/Services/video.service';
 import { VideoListManageComponent } from './video-list-manage/video-list-manage.component';
 
 @Component({

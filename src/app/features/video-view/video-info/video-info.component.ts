@@ -1,7 +1,7 @@
 // features/video-view/video-info/video-info.component.ts
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Video } from '../../../core/models/video.model';
+import { Video } from '../../../core/Models/video.model';
 
 @Component({
   selector: 'app-video-info',

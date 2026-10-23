@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { UserProfile } from '../../../core/models/user.model';
-import { UserService } from '../../../core/services/user.service';
+import { UserProfile } from '../../../core/Models/user.model';
+import { UserService } from '../../../core/Services/user.service';
 
 @Component({
   selector: 'app-general-info-tab',

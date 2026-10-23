@@ -9,7 +9,7 @@ import { CookieManager } from '@app/core/Utils/CookieManager.util';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = environment.apiUrl;
+  private usersUrl = `${environment.apiUrl}/users`;
 
   constructor(private http: HttpClient, public storage: LocalStorageUtil,private cookie :CookieManager) {}
 
@@ -37,7 +37,7 @@ export class AuthService {
     if (!data?.userName || !data?.password) {
       return throwError(() => new Error('Login data is missing or incomplete'));
     }
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data);
+    return this.http.post<AuthResponse>(`${this.usersUrl}/login`, data);
   }
 
   logout(): Observable<any> {
@@ -45,7 +45,7 @@ export class AuthService {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     });
-    return this.http.post(`${this.apiUrl}/logout`, {}, { headers }).pipe(
+    return this.http.post(`${this.usersUrl}/logout`, {}, { headers }).pipe(
       map((res) => {
         localStorage.removeItem('token');
         return res;
@@ -69,6 +69,6 @@ export class AuthService {
         () => new Error('Registration data is missing or incomplete')
       );
     }
-    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, data);
+    return this.http.post<AuthResponse>(`${this.usersUrl}/register`, data);
   }
 }

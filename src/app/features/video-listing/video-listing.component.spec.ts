@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
 import { BehaviorSubject, of, throwError } from 'rxjs';
-import { Video } from '../../core/models/video.model';
-import { VideoService } from '../../core/services/video.service';
+import { Video } from '../../core/Models/video.model';
+import { VideoService } from '../../core/Services/video.service';
 import { VideoListingComponent } from './video-listing.component';
 
 describe('VideoListingComponent', () => {

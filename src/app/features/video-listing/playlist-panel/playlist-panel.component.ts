@@ -2,8 +2,8 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Playlist } from '../../../core/models/playlist.model';
-import { PlaylistService } from '../../../core/services/playlist.service';
+import { Playlist } from '../../../core/Models/playlist.model';
+import { PlaylistService } from '../../../core/Services/playlist.service';
 
 @Component({
   selector: 'app-playlist-panel',

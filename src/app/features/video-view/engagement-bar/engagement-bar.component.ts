@@ -1,8 +1,8 @@
 // features/video-view/engagement-bar/engagement-bar.component.ts
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Video } from '../../../core/models/video.model';
-import { VideoService } from '../../../core/services/video.service';
+import { Video } from '../../../core/Models/video.model';
+import { VideoService } from '../../../core/Services/video.service';
 import { AuthService } from '../../../core/Services/AuthService/auth.service';
 
 @Component({

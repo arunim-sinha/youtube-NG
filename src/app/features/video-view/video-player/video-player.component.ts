@@ -1,7 +1,7 @@
 // features/video-view/video-player/video-player.component.ts
 import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Video } from '../../../core/models/video.model';
+import { Video } from '../../../core/Models/video.model';
 
 @Component({
   selector: 'app-video-player',

@@ -3,8 +3,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Video } from '../../../core/models/video.model';
-import { VideoService } from '../../../core/services/video.service';
+import { Video } from '../../../core/Models/video.model';
+import { VideoService } from '../../../core/Services/video.service';
 
 @Component({
   selector: 'app-recommendations',

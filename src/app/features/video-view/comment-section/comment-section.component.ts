@@ -2,8 +2,8 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Comment } from '../../../core/models/comment.model';
-import { CommentService } from '../../../core/services/comment.service';
+import { Comment } from '../../../core/Models/comment.model';
+import { CommentService } from '../../../core/Services/comment.service';
 import { AuthService } from '../../../core/Services/AuthService/auth.service';
 
 @Component({

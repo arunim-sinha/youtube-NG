@@ -2,7 +2,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ChannelRef } from '../../../core/models/video.model';
+import { ChannelRef } from '../../../core/Models/video.model';
 
 @Component({
   selector: 'app-creator-info',

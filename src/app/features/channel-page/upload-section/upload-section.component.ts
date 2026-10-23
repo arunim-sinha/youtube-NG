@@ -2,8 +2,8 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Video } from '../../../core/models/video.model';
-import { VideoService } from '../../../core/services/video.service';
+import { Video } from '../../../core/Models/video.model';
+import { VideoService } from '../../../core/Services/video.service';
 
 @Component({
   selector: 'app-upload-section',
