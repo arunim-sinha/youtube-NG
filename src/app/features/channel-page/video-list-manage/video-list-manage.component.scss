@@ -1,15 +1,15 @@
-.manage__empty { color: #606060; }
-.manage__error { border-radius: 8px; background: #fff0f0; color: #9c2525; padding: 10px 12px; font-size: 13px; }
+.manage__empty { color: var(--text-color-secondary, #606060); }
+.manage__error { border-radius: 8px; background: color-mix(in srgb, #dc2626 10%, var(--surface-0, #fff)); color: #b91c1c; padding: 10px 12px; font-size: 13px; }
 .manage__list { list-style: none; margin: 0; padding: 0; }
 .manage-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
 .manage-item__thumb { width: 140px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; }
 .manage-item__meta { flex: 1; min-width: 0; }
 .manage-item__title { font-weight: 600; font-size: 14px; }
-.manage-item__stats { font-size: 12px; color: #606060; }
+.manage-item__stats { font-size: 12px; color: var(--text-color-secondary, #606060); }
 .manage-item__visibility--private { color: #d93025; font-weight: 600; }
 .manage-item__visibility--unlisted { color: #b06000; font-weight: 600; }
 .manage-item__actions { display: flex; gap: 8px; }
 .manage-item__actions button {
-  border: 1px solid #ccc; background: #fff; border-radius: 16px; padding: 6px 12px; cursor: pointer; font-size: 13px;
+  border: 1px solid var(--surface-300, #ccc); background: var(--surface-0, #fff); color: var(--text-color, #222); border-radius: 16px; padding: 6px 12px; cursor: pointer; font-size: 13px;
 }
 .manage-item__delete { color: #d93025; border-color: #f3c1bd; }

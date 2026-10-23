@@ -9,15 +9,15 @@
 .comment__avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
 .comment__meta { font-size: 13px; }
 .comment__author { font-weight: 600; margin-right: 8px; }
-.comment__date { color: #606060; }
+.comment__date { color: var(--text-color-secondary, #606060); }
 .comment__text { margin: 4px 0; font-size: 14px; }
 .comment__actions button {
-  background: none; border: none; color: #606060; font-size: 12px; font-weight: 600;
+  background: none; border: none; color: var(--text-color-secondary, #606060); font-size: 12px; font-weight: 600;
   margin-right: 12px; cursor: pointer;
 }
 .comment__reply-box { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; max-width: 400px; }
 .comment__replies { list-style: none; margin: 12px 0 0; padding-left: 20px; border-left: 2px solid #eee; }
 .comments__empty, .comments__loading { color: var(--text-color-secondary, #737373); font-size: 13px; }
-.comments__error { border-radius: 8px; background: #fff0f0; color: #9c2525; padding: 9px 12px; font-size: 13px; }
+.comments__error { border-radius: 8px; background: color-mix(in srgb, #dc2626 10%, var(--surface-0, #fff)); color: #b91c1c; padding: 9px 12px; font-size: 13px; }
 .comments__retry { margin-bottom: 14px; }
 @media (max-width: 560px) { .comments__composer { align-items: stretch; flex-direction: column; } .comments__composer button { align-self: flex-end; } .comment__replies { padding-left: 12px; } }

@@ -36,6 +36,7 @@
       class="site-header__theme"
       type="button"
       [attr.aria-label]="isDarkMode ? 'Switch to light theme' : 'Switch to dark theme'"
+      [attr.aria-pressed]="isDarkMode"
       (click)="toggleDarkMode()"
     ><i [class]="isDarkMode ? 'pi pi-sun' : 'pi pi-moon'" aria-hidden="true"></i></button>
   </nav>

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { AuthService } from '@app/core/Services/AuthService/auth.service';
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
@@ -20,6 +21,7 @@ import { CookieManager } from '@app/core/Utils/CookieManager.util';
   styleUrl: './header.component.css',
 })
 export class HeaderComponent implements OnInit {
+  private static readonly themeStorageKey = 'playframe-theme';
   isLoggedIn = false;
   displayLoginDialog = false;
   displayRegisterDialog = false;
@@ -30,7 +32,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private cookie: CookieManager,
-    private router: Router
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: object
   ) {}
 
   searchVideos(): void {
@@ -42,16 +45,21 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isLoggedIn();
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    this.isDarkMode = localStorage.getItem(HeaderComponent.themeStorageKey) === 'dark';
+    document.documentElement.classList.toggle('app-dark', this.isDarkMode);
   }
 
-  toggleDarkMode() {
+  toggleDarkMode(): void {
     this.isDarkMode = !this.isDarkMode;
-    const element = document.querySelector('html');
-    if (this.isDarkMode) {
-      element?.classList.add('app-dark');
-    } else {
-      element?.classList.remove('app-dark');
-    }
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    document.documentElement.classList.toggle('app-dark', this.isDarkMode);
+    localStorage.setItem(
+      HeaderComponent.themeStorageKey,
+      this.isDarkMode ? 'dark' : 'light'
+    );
   }
 
   register(): void {
